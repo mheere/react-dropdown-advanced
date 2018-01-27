@@ -1,6 +1,6 @@
 
 # An advanced React Dropdown Component 
-## key features
+## Key features
 * caters for different types of dropdown items (action, checks, header, seperator) 
 * lazely calls back for dropdown items upon selection
 * dropdown items are removed from the markup when dropdown is closed
@@ -13,7 +13,11 @@
 Have a look at the [demo-page](http://www.reactdropdown.marcelheeremans.com) to see what the dropdown can do for you!
 
 # Typescript
+<<<<<<< HEAD
 Because I believe in typesafe code!  The code snippets below are extract from my Typescript test project.  An `index.d.ts` file has now been included within the bundle!
+=======
+Because I believe in typesafe code!  The code snippets below are extract from a Typescript test project.  An `index.d.ts` file has now been included within the bundle!
+>>>>>>> 09b1f372c1b421b70e11ffb3a10f97fa6dcdd9bc
 
 # Using the DropDown
 
@@ -277,5 +281,9 @@ v 1.1.3 | Initial release... (some issues with the prior ones...)
 v 1.1.6 | Fix of position of dropdown if the parent has a scrollbar which is scrolled down
 v 1.1.7 | TypeScript support (now part of the bundle)
 v 1.1.8 | Improved selector (how to target the correct element - updated code and docs)
+<<<<<<< HEAD
 v 1.1.9 | Linked up with github
+=======
+
+>>>>>>> 09b1f372c1b421b70e11ffb3a10f97fa6dcdd9bc
 
