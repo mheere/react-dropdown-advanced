@@ -2,4 +2,5 @@ lib/
 .npmignore
 gulpfile.js
 package-lock.json
+src/index.tsx
 
