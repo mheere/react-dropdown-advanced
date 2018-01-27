@@ -1,0 +1,47 @@
+{
+  "name": "react-dropdown-advanced",
+  "version": "1.0.0",
+  "description": "A seriously advanced React Dropdown tool with many custom options.",
+  "main": "init.js",
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack-dev-server --content-base dist/ --inline --hot --colors"
+  },
+  "author": "marcel heeremans",
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.0.31",
+    "@types/react-dom": "^16.0.3",
+    "awesome-typescript-loader": "^3.4.1",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-minify": "^2.1.0",
+    "gulp-rimraf": "^0.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-typescript": "^4.0.0-alpha.1",
+    "gulp-uglify": "^3.0.0",
+    "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.7.2",
+    "run-sequence": "^2.2.1",
+    "sass-loader": "^6.0.6",
+    "source-map-loader": "^0.2.3",
+    "style-loader": "^0.19.0",
+    "typescript": "^2.6.2",
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.4",
+    "webpack-merge": "^4.1.1"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "material-design-icons": "^3.0.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}

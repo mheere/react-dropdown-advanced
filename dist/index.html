@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>React Dropdown Test</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+
+        <div id='root'></div>
+
+        <div class="row">
+            <div class="column1" >
+                <div class='my-header'>Simple 'fixed'</div>
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/fixeditems.png>" />
+                <div id="ex1" class='example ex1'>
+                    example
+                </div>
+            </div>
+            <div class="column2" >
+                <h4>Code example</h4>
+<pre><code>
+...
+// specify some fixed items
+this.fixedItems.push(new ActionItem("A", "Holiday in France"));
+this.fixedItems.push(new ActionItem("B", "Go to California"));
+this.fixedItems.push(new ActionItem("C", "Visit London"));
+...
+private onClick = (item: DropDownItem) => {
+    console.log(`Item '${item.text}' was clicked. [key: ${item.key}]`);
+}
+...
+&lt;div id='test-menu-lt'>
+    fixed items
+    &lt;DropDownMenu items={this.fixedItems} onClick={this.onClick} direction={DropDownDirection.DownRight} /&gt;
+&gt;
+</code></pre>
+            </div>
+
+
+
+            <div class="column1" >
+                <div class='my-header'>Dynamic items</div>
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>" />
+                <div id="ex2" class='example'>example</div>
+            </div>
+            <div class="column2" >
+                <h4>Code example</h4>
+<pre><code>
+...
+private getDynamicItems = () => {
+    var arr: DropDownItemBase[] = [];
+    arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+    arr.push(new SeperatorItem());
+    arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
+    arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+    arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+    return arr;
+}
+...
+&lt;div id='test-menu-lt'>
+    fixed items
+    &lt;DropDownMenu items={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownLeft} /&gt;
+&gt;
+</code></pre>
+            </div>
+
+
+
+            <div class="column1" >
+                <div class='my-header'>Radio/Option mixed</div>
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png>" />
+                <div id="ex3" class='example'>example</div>
+            </div>
+            <div class="column2" >
+                <h4>Code example</h4>
+<pre><code>
+...
+static getDynamicItems() {
+    var arr: DropDownItemBase[] = [];
+    arr.push(new OptionItem("keyZ", "My Option 1", "A"));           // groupBy of 'A'
+    arr.push(new OptionItem("keyA", "My Option 2", "A", true));     // groupBy of 'A' and set to selected
+    arr.push(new SeperatorItem());
+    arr.push(new ActionItem("keyB", "Take Action A"));              // dropdown will close when selected
+    arr.push(new ActionItem("keyC", "Take Action B"));
+    arr.push(new SeperatorItem());
+    arr.push(new OptionItem("keyA2", "Buy Apples", "", true));
+    arr.push(new OptionItem("keyB2", "Buy Bananas", "", true));
+    arr.push(new OptionItem("keyC2", "Buy Pomegranates"));
+    arr.push(new SeperatorItem());
+    arr.push(new OptionItem("keyO2", "Haarlem is the best place to live", "C"));
+    arr.push(new OptionItem("keyO3", "Amsterdam is the best place to live", "C"));
+    return arr;
+}
+...
+static demoComplex = () => {
+    
+    // 1. create a new DropDownControl for this element
+    var dd: DropDownControl = new DropDownControl('#test-menu-lt');
+
+    // 2. specify the dropdown items
+    dd.getItems = Test.getDynamicItems;
+
+    // 3. prevent the dropdown from closing when an ActionItem is clicked
+    dd.closeOnActionItemClick = false;
+
+    // 4. place event handlers
+    dd.onClick = (item: DropDownItem) => {
+        console.log(`Item '${item.key}' was clicked. [key: ${item.key}]`);
+        //if (item.key == "cancel") dd.
+    }
+    dd.onChecked = (item: OptionItem, checkedOptionItems: OptionItem[], allCheckedOptionItems: OptionItem[]) => {
+        console.log(`'${item.text}' was clicked [checked: ${item.isChecked}]`);
+    }
+    dd.onClose = (item) => {
+        var txt = item ? item.text : " no item was clicked";
+        console.log("popup closed - last item: " + txt);
+    };
+
+    // 4. create the react dropdown
+    dd.createMenu();
+}
+</code></pre>
+            </div>                    
+
+
+
+            <div class="column1" >
+                    <div class='my-header'>Showcase</div>
+                    <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png>" />
+                    <div id="ex4" class='example'>example</div>
+                </div>
+                <div class="column2" >
+                    <h4>Code example</h4>
+    <pre><code>
+static getDynamicItems() {
+    var arr: DropDownItemBase[] = [];
+    arr.push(new ActionItem("booknow", "Book now!", "fa-plane"));
+    arr.push(new SeperatorItem());
+    arr.push(new HeaderItem("Choose your destination:"));
+    arr.push(new OptionItem("california", "California and Santa Monica", "A"));
+    arr.push(new OptionItem("newyork", "New York", "A"));
+    arr.push(new OptionItem("miami", "Miami", "A"));
+    arr.push(new SeperatorItem());
+    arr.push(new HeaderItem("Mode of transport:"));
+    arr.push(new OptionItem("car", "By car", "B"));
+    arr.push(new OptionItem("boat", "By boat", "B"));
+    arr.push(new OptionItem("plane", "By plane", "B"));
+    arr.push(new SeperatorItem());
+    arr.push(new HeaderItem("Choose your activities:"));
+    arr.push(new OptionItem("beach", "Visit the beach"));
+    arr.push(new OptionItem("town", "Walk through town"));
+    arr.push(new OptionItem("parks", "Visit Parks"));
+    arr.push(new OptionItem("hirecar", "Hire a car"));
+    arr.push(new OptionItem("nothing", "Do absoluetly nothing!"));
+    return arr;
+}
+
+static demoComplex = () => {
+    
+    // 1. create a new DropDownControl for this element
+    var dd: DropDownControl = new DropDownControl('#test-menu-lt');
+
+    // 2. specify the dropdown items callback
+    dd.getItems = Test.getDynamicItems;
+
+    // 3. prevent the dropdown from closing when an ActionItem is clicked (you may wish to validate options and close the dropdown manually by calling .close())
+    dd.closeOnActionItemClick = false;
+
+    // 4. place event handlers
+    dd.onClick = (item: DropDownItem) => {
+        console.log(`Item '${item.text}' was clicked. [key: ${item.key}]`);
+    }
+    dd.onChecked = (item: OptionItem, checkedOptionItems: OptionItem[], allCheckedOptionItems: OptionItem[]) => {
+        console.log(`'${item.text}' was clicked [checked: ${item.isChecked}]`);
+    }
+    dd.onClose = (item) => {
+        var txt = item ? item.text : " no item was clicked";
+        console.log("popup closed - last item: " + txt);
+    };
+
+    // 4. create the react dropdown
+    dd.createMenu();
+}
+    
+    </code></pre>
+                </div>   
+          
+        </div>
+        
+        <script src="./bundle.js"></script>
+        
+    </body>
+</html>
