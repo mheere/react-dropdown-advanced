@@ -85,6 +85,7 @@
         alignText: boolean;
         items: DropDownItemBase[]; 
         close(): void;
+        createMenu(): void;
         getItems: () => DropDownItemBase[];
         onClick?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;

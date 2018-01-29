@@ -480,12 +480,17 @@ export class DropDownControl {
 }
 
 
+// A small helper class allowing me to pass through a 'close' handler to the React component so
+// that a client can instigate a proper 'closing' of the popup. 
 export class CloseHelper {
 
+    // called from the client who will then in effect call the 'acceptClose' function
+    // that should be implemented in the React component.
     public close() {
         if (this && this.acceptClose) this.acceptClose();
     }
 
+    // implemented in the constructor of the react comp - which will call 'hide'..
     public acceptClose: () => void;
 
 }
