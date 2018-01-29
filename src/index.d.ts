@@ -79,18 +79,22 @@
     // -------------------------
 
     interface DropDownControl {
+        element: any;
         direction: DropDownDirection;
         closeOnActionItemClick: boolean;
         closeOnOptionItemClick: boolean;
         alignText: boolean;
-        items: DropDownItemBase[]; 
-        close(): void;
-        createMenu(): void;
-        getItems: () => DropDownItemBase[];
+        
         onClick?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onChecked?: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onOpened?: () => void;
+
+        items: DropDownItemBase[]; 
+        getItems: () => DropDownItemBase[];
+        
+        close(): void;
+        createMenu(): void;
     }
 
     interface DropDownControlConstructor {
