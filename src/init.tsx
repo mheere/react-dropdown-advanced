@@ -171,6 +171,7 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
 
         var item = new ActionItem("setting", "System Settings", "fa-cog");
         item.addRightImage("fa-ellipsis-h", "popup config screen");
+        item.marginRight = 15;
         this.fixedItems.push(item);
 
     }

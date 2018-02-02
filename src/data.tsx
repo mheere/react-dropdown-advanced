@@ -14,6 +14,7 @@ export class TestData {
             arr.push(new SeperatorItem());
             item = new ActionItem("profile", "Show User Profile", "fa-user-o");
             item.addRightImage("fa-mail-forward", "forward this item");
+            item.marginRight = 32;
             arr.push(item);
             arr.push(new ActionItem("bell", "Show outstanding alerts", "fa-bell"));
             arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "fa-btc"));

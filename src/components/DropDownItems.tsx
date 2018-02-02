@@ -115,6 +115,7 @@ export class ActionItem extends DropDownItem {
     public imageRight: RightImageInfo[] = [];   // image (either fa or material)
     public className: string = "";          // any additional className info that is appended to the <i> image element
     public clickedImage: string = "";       // the name of the image that raised the clicked event (was clicked)
+    public marginRight: number = 0;         // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean) {
         super(key, text);
@@ -137,11 +138,18 @@ export class ActionItem extends DropDownItem {
         var cn = "";
         if (this.imageLeft.length == 0 && imagesAreShown) 
             cn = 'increase-left-margin';
+        
+        let style = {};
+
+        if (this.marginRight > 0)
+            style = { 
+                marginRight: this.marginRight + "px"
+            };
 
         return (
             <div className='dda-dropdown-item'>
                 { this.renderLeftImage() }
-                <span className={'flex ' + cn } ref={(el) => { this.setTitle(el, this.text); }}>{this.text}</span>
+                <span className={'flex ' + cn } ref={(el) => { this.setTitle(el, this.text); }} style={style}>{this.text}</span>
                 { this.renderRightImages() }
             </div>
         )

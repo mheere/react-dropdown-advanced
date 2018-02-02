@@ -62,6 +62,7 @@
         imageRight: RightImageInfo[];
         className: string;
         clickedImage: string;
+        marginRight: number;
         addRightImage(img: string, tooltip?: string): void;
     }
 
