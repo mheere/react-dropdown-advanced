@@ -143,6 +143,7 @@ There are four different types of DropdownItem to choose from
 *ActionItem* |imageLeft | string | identifies the 'left' image, this can either be a font awesome image (i.e. 'fa-user-o') or a google material-design-icon
 *ActionItem* |imageRight | RightImageInfo[] | an array of 'RightImageInfo' images (use addRightImage method to add these)
 *ActionItem* |isDisabled | boolean | if true, the item is shown in disabled state  
+*ActionItem* |marginRight | number | if > 0 this will be applied to the right-margin of the text of the dropdown item 
 *OptionItem* | key | string | should be unique, if none is given then one is generated 
 *OptionItem* |text | string | the text shown to the user in the item 
 *OptionItem* |isDisabled | boolean | if true, the item is shown in disabled state
@@ -273,6 +274,29 @@ static demoComplex = () => {
 ```
 
 
+# Styling the Dropdown
+
+It's easy to customise the dropdown to change its look. The easiest way is to simply include this snippet somewhere in your own css.
+
+```javascript
+.dda-dropdown-list {
+    border: 2px solid #8eab7d!important;
+}
+
+.dda-dropdown-list > div {
+    border-bottom: solid 1px #8eab7d!important;
+}
+
+.dda-dropdown-list > div:hover {
+    background: #8eab7d!important;
+    color: #f6ffae;
+}
+```
+
+to get a look like this:
+
+![CustomStyling.png](http://www.reactdropdown.marcelheeremans.com/pics/CustomStyling.png)
+
 # Further Comments
 
 ### Tooltips
@@ -296,3 +320,4 @@ v 1.1.8 | Improved selector (how to target the correct element - updated code an
 v 1.1.9 | Linked up with github
 v 1.1.10 | Added a missing 'createMenu' to TypeScript definition file index.d.ts
 v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some bug-fixes - now supports right images and more predictable popup placing.
+v 1.2.1 | Styling changes and additional customisation
