@@ -1,4 +1,5 @@
-lib/
+lib_sourcemap/
+lib_to_npm/
 node_modules/
 .npmignore
 gulpfile.js

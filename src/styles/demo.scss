@@ -14,13 +14,47 @@ body {
     font-size: 14px;
 }
 
+
+
+#strip {
+    height: 40px;
+    padding: 5px;
+    background-color: lightgoldenrodyellow;
+    color:darkslategray;
+    width: 100%;
+}
+
+#root .nav-l-2 {
+    height: 30px;
+    border-top: 1px solid transparent;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.pull-right {
+    float: right !important;
+}
+
+#root .nav-l-2 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#root .nav-l-2 ul li a {
+    padding: 6px 10px 5px 10px;
+    display: block;
+}
+
 .example {
     width: 100px;
     text-align: center;
     background-color: #dadada;
     color: #331717;
     margin-top: 10px;
-    margin-left: 20px;
+    margin-left: 120px;
     padding: 3px;
     border: 2px solid #235d7d;
     border-radius: 5px;
@@ -85,6 +119,7 @@ body {
 #root2 {
     display:inline-block; 
     padding: 10px;
-    width: 150px; 
-    background: red;
+    width: 100px;
+    background: #b12626;
+    color: white;
 }

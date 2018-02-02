@@ -24,9 +24,10 @@ export function instanceOf(typeA: any, typeB: any) {
     return (typeA.constructor.toString() === typeB.toString());
 }
 
+// simply get a whole lot of coordinates of where the element is positioned
 export function getCoords(elem: any) { // crossbrowser version
     if (!elem) return;
-    
+
     var box = elem.getBoundingClientRect();
 
     var body = document.body;

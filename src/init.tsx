@@ -12,11 +12,14 @@ require('font-awesome/css/font-awesome.css');
 // -----------------------------
 
 // 1. create a new DropDownControl for this element
-//var dd = new DropDownControl('#ex1');
-var dd = new DropDownControl('.ex1');
+var dd = new DropDownControl('#ex1');
+//var dd = new DropDownControl('.ex-right-img');
+//var dd = new DropDownControl('#abc001');
+dd.setToRelativePositionIfNotSet = true;
 
 // 2. specify the dropdown items
 dd.getItems = () => TestData.getItems("simple items");
+dd.direction = DropDownDirection.DownRight;
 
 // 3. 
 dd.closeOnActionItemClick = true;
@@ -65,7 +68,38 @@ dd2.onClose = (item) => {
  // 4. create the react dropdown
 dd2.createMenu();
 
-// ------------------------------------------
+
+// 1. create a new DropDownControl for this element
+//var dd = new DropDownControl('#ex1');
+var dd = new DropDownControl('#ex-right-img');
+//var dd = new DropDownControl('#abc001');
+dd.setToRelativePositionIfNotSet = true;
+
+// 2. specify the dropdown items
+dd.getItems = () => TestData.getItems("action-img-items");
+dd.direction = DropDownDirection.DownRight;
+
+// 3. 
+dd.closeOnActionItemClick = true;
+
+// 4. place event handlers
+dd.onClick = (item) => {
+    var aitem = item as ActionItem;
+    console.log(`Item '${item.key}' was clicked. [key: ${item.key}] - clickedImage: ${aitem.clickedImage}`);
+    //if (item.key == "cancel") dd.
+}
+dd.onChecked = (item, checkedOptionItems, allCheckedOptionItems) => {
+    console.log(`'${item.text}' was clicked [checked: ${item.isChecked}]`);
+}
+dd.onClose = (item) => {
+    var txt = item ? item.text : " no item was clicked";
+    console.log("popup closed - last item: " + txt);
+};
+
+ // 4. create the react dropdown
+ dd.createMenu();
+
+// -----------------------------
 
  // 1. create a new DropDownControl for this element
  var dd3 = new DropDownControl('#ex3');
@@ -134,7 +168,11 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
         this.fixedItems.push(new SeperatorItem());
         this.fixedItems.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
         this.fixedItems.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
-        this.fixedItems.push(new ActionItem("setting", "System Settings", "fa-cog"));
+
+        var item = new ActionItem("setting", "System Settings", "fa-cog");
+        item.addRightImage("fa-ellipsis-h", "popup config screen");
+        this.fixedItems.push(item);
+
     }
 
     private fixedItems: DropDownItemBase[] = [];
@@ -150,12 +188,13 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
     render() {
         return <div id='root2'>
                     user: marcel
-                    <DropDownMenu items={this.fixedItems} onClick={this.onClick} direction={DropDownDirection.DownRight} />
+                    <DropDownMenu items={this.fixedItems} onClick={this.onClick} direction={DropDownDirection.DownLeft} />
                 </div>
     }
 }
 
 var onClick = (item: DropDownItem) => { console.log("caller click: " + item.key)};
 
-ReactDOM.render(<DropDownDemo1 clickHandler={onClick} />, document.getElementById('root'));
+ReactDOM.render(<DropDownDemo1 clickHandler={onClick}  />, document.getElementById('test001'));
+
 

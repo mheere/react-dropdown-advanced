@@ -18,6 +18,7 @@ interface I_Dropdown_Props {
     onOpened?: () => void;
     maxHeight?: number;
     alignText?: boolean;
+    setRelativePosition? : boolean;
 }
 
 interface I_Dropdown_State {
@@ -40,7 +41,8 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         onChecked: () => {},
         onOpened: () => {},
         maxHeight: 260,
-        alignText: true
+        alignText: true,
+        setRelativePosition: true
     }
 
     constructor(prop: any) {
@@ -139,6 +141,10 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
         // don't process header or seperator items
         if (item.isHeaderItem || item.isSeperatorItem || item.isDisabled) return;
+
+        if (item.isActionItem && e.target.className.includes("img-right")) {
+            item.asActionItem(item).clickedImage = e.target.dataset.imgRight || "";
+        }
 
         // if the selected item is an OptionItem then toggle 
         if (item.isOptionItem) {
@@ -247,24 +253,64 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
     private getStyle() {
 
-        var coords = __utils.getCoords(this.state.element);
+        // if the source element does not have a 'position' set then we'll set it to 'relative'
+        var posNotSet = this.state.element.style.position == "";
+        if (posNotSet && this.props.setRelativePosition)
+            this.state.element.style.position = "relative";
 
-        const styleDownLeft = {
-            top: coords.bottom + "px",
-            right: coords.rightFromWindow + "px"
-          };
-        const styleDownRight = {
-            top: coords.bottom + "px",
-            left: coords.left + "px"
-          };
-        const styleUpLeft = {
-            bottom: coords.topFromWindow + "px",
-            right: coords.rightFromWindow + "px"
-          };
-        const styleUpRight = {
-            bottom: coords.topFromWindow + "px",
-            left: coords.left + "px"
-          };
+        var posRelative = this.state.element.style.position == "relative";
+        var posAbsolute = this.state.element.style.position == "absolute";
+        
+        var coords = __utils.getCoords(this.state.element);
+        var styleDownLeft, styleDownRight, styleUpLeft, styleUpRight;
+
+        // NOTE about position not recognised by react typescript 
+        // https://github.com/Microsoft/TypeScript/issues/11465
+        if (posRelative || posAbsolute) {
+            styleDownLeft = {
+                position: "absolute" as "absolute",
+                top: coords.height + "px",
+                right: "0px"
+              } ;
+            styleDownRight = {
+                position: "absolute" as "absolute",
+                top: coords.height + "px",
+                left: "0px"
+              };
+            styleUpLeft = {
+                position: "absolute" as "absolute",
+                bottom: coords.height + "px",
+                right: "0px"
+              };
+            styleUpRight = {
+                position: "absolute" as "absolute",
+                bottom: coords.height + "px",
+                left: "0px"
+              };
+        }
+        else {
+            // not relative
+            styleDownLeft = {
+                position: "fixed" as "fixed",
+                top: coords.bottom + "px", 
+                right: coords.rightFromWindow + "px"
+              };
+            styleDownRight = {
+                position: "fixed" as "fixed",
+                top: coords.bottom + "px",
+                left: coords.left + "px"
+              };
+            styleUpLeft = {
+                position: "fixed" as "fixed",
+                bottom: coords.topFromWindow + "px",
+                right: coords.rightFromWindow + "px"
+              };
+            styleUpRight = {
+                position: "fixed" as "fixed",
+                bottom: coords.topFromWindow + "px",
+                left: coords.left + "px"
+              };
+        }
 
         var direction = this.props.direction;
         if (direction == DropDownDirection.UpLeft) return styleUpLeft;
@@ -292,6 +338,9 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
     private setTitle(el: any, title: string) {
         if (el == null) return;
 
+        // enure no title is shown if we are within the width (even if the target did specify one)
+        el.setAttribute('title', "");
+
         if (el.offsetWidth < el.scrollWidth)  
             el.setAttribute('title', title);
     }
@@ -310,60 +359,18 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         // if we are not showing the items then don't render the list!
         if (!this.state.listVisible) return null;
           
-        var seperatorItem = (item: SeperatorItem) => (
-            <span className='dropdown-item seperator'></span>
-        );
-
-        var headerItem = (item: HeaderItem) => (
-            <span className='dropdown-item header' ref={(el) => { this.setTitle(el, item.header); }}>{item.header}</span>
-        );
-
-        var faImg = (item: ActionItem) => {
-            if (item.hasImgFontAwesome)
-                return (<i className={"fa fa-fw " + item.image + " " + item.className} aria-hidden="true"></i>)
-            else if (item.hasImgMaterial)
-                return (<i className={"material-icons material-icons-adjust " + item.className}>{item.image}</i>)
-            else
-                return undefined;
-        };
-
-        var itemShowImg = (item: ActionItem) => {
-            if (item.hasImg) return true;
-
-            // if anywhere else an image is shown then we have to return a 'has-img' to restrict its width...
+        // check if ANY of the items is showing an 'image' (or checkbox), if so return true
+        // we need to know so we can adjust the item text width!
+        var imagesAreShown = () => {
             if (this.showingImages() && this.props.alignText)
                 return true;
-
             return false;
-        }
-
-        var actionItem = (item: ActionItem) => (
-            <div className='dropdown-item'>
-                <span className={ itemShowImg(item) ? 'img' : '' }  >
-                    { faImg(item) }
-                </span>
-                <span className={'action ' + itemShowImg(item) ? 'has-img' : '' } ref={(el) => { this.setTitle(el, item.text); }}>{item.text}</span>
-            </div>
-        );
-
-        var optionItem = (item: OptionItem) => (
-            <div className='dropdown-item' style={ { position: 'relative' } }>
-                <span className={"img-check " + (item.groupBy.length > 0 ? ' option ' : '') + (item.isChecked ? ' checked ' : '')}></span>
-                <span className='dropdown-item option has-img' ref={(el) => { this.setTitle(el, item.text); }}>{item.text}</span>
-            </div>
-        );
-
-        var getItem = (item: DropDownItemBase) => {
-            if (item.isSeperatorItem) return seperatorItem(item as SeperatorItem);
-            if (item.isActionItem) return actionItem(item as ActionItem);
-            if (item.isOptionItem) return optionItem(item as OptionItem);
-            if (item.isHeaderItem) return headerItem(item as HeaderItem);
         }
 
         // callback for any items and map these to something useful
         return this.state.dropDownItems.map(item => (
             <div key={item.key} className={item.ddclass} onClick={this.select.bind(this, item)} style={ { position: 'relative' } }>
-                {getItem(item)}
+                { item.render(imagesAreShown()) }
             </div>
         ));
     }
@@ -371,11 +378,12 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
     render() {
 
         if (this.state.element != null) {
+
             // get the correct style
-            const style = this.getStyle();
+            const style = this.state.listVisible ? this.getStyle() : {};
 
             // render the actual drop down
-            return <div className={"mh-dropdown-container " + (this.state.listVisible ? "show" : "")} style={style}>
+            return <div className={"dda-container " + (this.state.listVisible ? "show" : "")} style={style}>
                 <div className={'dropdown-list ' + this.getDropDownClass()} >
                     {this.renderListItems()}
                 </div>
@@ -400,6 +408,7 @@ export class DropDownControl {
     public onChecked: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     public onOpened: () => void;
     public alignText: boolean = true;   // if true, we align any ActionItems that have no image with ActionItem(s) that do have an image or OptionItems (since these always have an 'image')
+    public setToRelativePositionIfNotSet: boolean = true;     // this ensures we will set the element to have a position of 'relative' if it wasn't set!
     private __closeHelper: CloseHelper = new CloseHelper();
     
     // called just before the items are needed allowing customising of the items depending on current state
@@ -466,6 +475,7 @@ export class DropDownControl {
             __closeHelper={this.__closeHelper}
             direction={this.direction}
             alignText={this.alignText} 
+            setRelativePosition={this.setToRelativePositionIfNotSet}
             closeOnActionItemClick={this.closeOnActionItemClick}
             closeOnOptionItemClick={this.closeOnOptionItemClick}
             items={this.items}
@@ -479,13 +489,17 @@ export class DropDownControl {
 
 }
 
-
+// A small helper class allowing me to pass through a 'close' handler to the React component so
+// that a client can instigate a proper 'closing' of the popup. 
 export class CloseHelper {
 
+    // called from the client who will then in effect call the 'acceptClose' function
+    // that should be implemented in the React component.
     public close() {
         if (this && this.acceptClose) this.acceptClose();
     }
 
+    // implemented in the constructor of the react comp - which will call 'hide'..
     public acceptClose: () => void;
 
 }

@@ -12,13 +12,12 @@
     interface DropDownItemBase {
         key: string;
         isDisabled: boolean;
+        data: any;
 
         isActionItem: boolean;
         isOptionItem: boolean;
         isSeperatorItem: boolean;
         isHeaderItem: boolean;
-
-        ddclass(): string;
     }
 
     // -------------------------
@@ -51,9 +50,19 @@
 
     // -------------------------
 
+    interface  RightImageInfo {
+        imageRight: string;
+        toolTip: string;
+    }
+
+    // -------------------------
+
     interface ActionItem extends DropDownItem {
-        image: string;
+        imageLeft: string;
+        imageRight: RightImageInfo[];
         className: string;
+        clickedImage: string;
+        addRightImage(img: string, tooltip?: string): void;
     }
 
     interface ActionItemConstructor {
@@ -79,17 +88,23 @@
     // -------------------------
 
     interface DropDownControl {
+        element: any;
         direction: DropDownDirection;
         closeOnActionItemClick: boolean;
         closeOnOptionItemClick: boolean;
         alignText: boolean;
-        items: DropDownItemBase[]; 
-        close(): void;
-        getItems: () => DropDownItemBase[];
+        setToRelativePositionIfNotSet: boolean;
+        
         onClick?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onChecked?: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onOpened?: () => void;
+
+        items: DropDownItemBase[]; 
+        getItems: () => DropDownItemBase[];
+        
+        close(): void;
+        createMenu(): void;
     }
 
     interface DropDownControlConstructor {

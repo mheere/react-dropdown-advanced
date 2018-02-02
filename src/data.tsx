@@ -5,6 +5,20 @@ export class TestData {
 
     static getItems = (pos: string = '') => {
         var arr: DropDownItemBase[] = [];
+        if (pos == 'action-img-items') {
+            var item = new ActionItem("A", "Logout", "fa-download", true);
+            item.data = { pos };
+            item.addRightImage("fa-cog", "settings");
+            item.addRightImage("fa-window-close-o", "exit the application");
+            arr.push(item);
+            arr.push(new SeperatorItem());
+            item = new ActionItem("profile", "Show User Profile", "fa-user-o");
+            item.addRightImage("fa-mail-forward", "forward this item");
+            arr.push(item);
+            arr.push(new ActionItem("bell", "Show outstanding alerts", "fa-bell"));
+            arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "fa-btc"));
+            arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+        }
         if (pos == 'simple items') {
             arr.push(new ActionItem("A", "Holiday in France"));
             arr.push(new ActionItem("B", "Go to California"));
@@ -57,7 +71,11 @@ export class TestData {
             arr.push(new OptionItem("nothing", "Do absolutely nothing and less then that!"));
         }
         if (pos == 'left-bottom' || pos == "showcase") {
-            arr.push(new ActionItem("booknow", "Book now!", "fa-plane"));
+            var item = new ActionItem("booknow", "Book now!", "fa-plane");
+            item.data = { pos };                            // save some random data with this item
+            item.addRightImage("fa-cog", "settings");
+            item.addRightImage("fa-window-close-o", "exit the application");
+            arr.push(item);
             arr.push(new SeperatorItem());
             arr.push(new HeaderItem("Choose your destination:"));
             arr.push(new OptionItem("california", "California and Santa Monica", "A"));
