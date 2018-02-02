@@ -215,7 +215,7 @@ ___
 ## Showtime!
 ### _A mixtures of Action, Option, Header and Seperator items!_
 
-![OptionsComplex2.png](http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex2.png)
+![OptionsComplex2.png](http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex3.png)
 ```javascript
 static getDynamicItems() {
     var arr: DropDownItemBase[] = [];

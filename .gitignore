@@ -2,6 +2,8 @@ lib_sourcemap/
 lib_to_npm/
 node_modules/
 .npmignore
+.gitignore
+info.txt
 gulpfile.js
 package-lock.json
 src/index.tsx
