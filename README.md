@@ -7,13 +7,13 @@
 * a variety of events are raised on check, click, open/close etc
 * popup location is configurable (left/right/top/bottom)
 * the dropdown can be created through code using any html element as source
-* popup is closable through code
+* popup is closable through code 
 
-# Demo
+## Demo
 Have a look at the [demo-page](http://www.reactdropdown.marcelheeremans.com) to see what the dropdown can do for you!
 
-# Typescript
-Because I believe in typesafe code!  The code snippets below are extract from my Typescript test project.  An `index.d.ts` file has now been included within the bundle!
+## Typescript
+Because I believe in typesafe code!  The code snippets below are extract from my Typescript test project.  An `index.d.ts` file has now been included within the bundle and should in most cases automatically give you intellisense.
 
 # Using the DropDown
 
@@ -38,15 +38,22 @@ private onClick = (item: DropDownItem) => {
 ```
 Bit boring, let's see what else we can do. 
 ## Dynamic dropdown items (calls back for dropdown items)
-![FixedItems.png](http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png)
+![RightImages.png](http://www.reactdropdown.marcelheeremans.com/pics/rightimages.png)
 ```javascript
 ...
 private getDynamicItems = () => {
     var arr: DropDownItemBase[] = [];
-    arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+    var item = new ActionItem("A", "Logout", "fa-download");
+    item.data = { pos };
+    item.addRightImage("fa-cog", "settings");
+    item.addRightImage("fa-window-close-o", "exit the application");
+    arr.push(item);
     arr.push(new SeperatorItem());
-    arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
-    arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+    item = new ActionItem("profile", "Show User Profile", "fa-user-o");
+    item.addRightImage("fa-mail-forward", "forward this item");
+    arr.push(item);
+    arr.push(new ActionItem("bell", "Show outstanding alerts", "fa-bell"));
+    arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "fa-btc"));
     arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
     return arr;
 }
@@ -56,10 +63,12 @@ private getDynamicItems = () => {
     <DropDownMenu getItems={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownRight} />
 </div>
 ```
-Bit more interesting. The code above **calls back for its items** when clicked.  It also demonstrates the use of a seperator item and the dropdown opening towards the bottom/left.
+Bit more interesting. The code above **calls back for its items** when clicked.  So items can be (re)configured before returning the array with items.
+
+It also shows the use of right side images.  These can have their own tooltip and on clicking the image the item gets triggered as if it were selected itself.  The user can check the `clickedImage` property on the ActionItem to check if the user clicked the full item or the image specifically!
 
 ## **Load the CSS!**
-Do not forget to require or somehow import the corresponding css of this dropdown!
+Do not forget to load the rdropdown.css into your project (using a 'require' or other means)
 
 `require('react-dropdown-advanced/styles/rdropdown.css')`
 
@@ -116,6 +125,7 @@ Type | Name | args/value (default) | Description |
 *property* | alignText | `true` | true will force ActionItems that have no image to be aligned with ActionItems that do have an image or with OptionItems (example given at 'Other' section below)  |
 *property* | closeOnActionItemClick | `true` | Set to false for the Dropdown Menu to stay visible on clicking an ActionItem |
 *property* | closeOnOptionItemClick | `false` | Set to true for the Dropdown Menu to hide on clicking an OptionItem |
+*property* | setToRelativePositionIfNotSet | `true` | 'true' will allow the control to place a `position=relative` if 'position' is not set on the parent |
 *property* | items   | DropDownItemBase[] | a static list of dropdown items that is presented to the user |
 *property* | getItems | () => DropDownItemBase[] | a function callback that allows the user to return a custom set of dropdown items |
 *method* | close | () => void | closes the dropdown if in opened state |
@@ -129,12 +139,13 @@ There are four different types of DropdownItem to choose from
 | ---- | ------ | ----------- | ----------- | 
 *ActionItem* | key | string | should be unique, if none is given then one is generated 
 *ActionItem* |text | string | the text shown to the user in the item 
-*ActionItem* |isDisabled | boolean | if true, the item is shown in disabled state - onClick __is__ still called! 
-*ActionItem* |image | string | can either be a font awesome image (i.e. 'fa-user-o') or a google material-design-icon  
---|--|--|--||
+*ActionItem* |className | string | allows for some customisation 
+*ActionItem* |imageLeft | string | identifies the 'left' image, this can either be a font awesome image (i.e. 'fa-user-o') or a google material-design-icon
+*ActionItem* |imageRight | RightImageInfo[] | an array of 'RightImageInfo' images (use addRightImage method to add these)
+*ActionItem* |isDisabled | boolean | if true, the item is shown in disabled state  
 *OptionItem* | key | string | should be unique, if none is given then one is generated 
 *OptionItem* |text | string | the text shown to the user in the item 
-*OptionItem* |isDisabled | boolean | if true, the item is shown in disabled state - onClick __is__ still called! 
+*OptionItem* |isDisabled | boolean | if true, the item is shown in disabled state
 *OptionItem* |isChecked | boolean | indicates if this option is in 'checked' state or not 
 *OptionItem* |groupBy | string | allows for certain OptionItems to be grouped, items with the same groupBy are mutually exclusive
 --|--|--|--||
@@ -150,14 +161,14 @@ Option items render themselves differently depending on their mode.
 A __square__ (checkbox) image is shown when the `groupBy` property is _not_ set, indicating a toggleable state (on/off).  
 A __circle__ (radio button) is shown to indicate that only a single option is allowed within the group of items identified by the same `groupBy` property.
 
-![FixedItems.png](http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png)
+![OptionsComplex.png](http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png)
 ```javascript
 static getDynamicItems() {
     var arr: DropDownItemBase[] = [];
     arr.push(new OptionItem("keyZ", "My Option 1", "A"));           // groupBy of 'A'
     arr.push(new OptionItem("keyA", "My Option 2", "A", true));     // groupBy of 'A' and set to selected
     arr.push(new SeperatorItem());
-    arr.push(new ActionItem("keyB", "Take Action A"));              // dropdown will close when selected
+    arr.push(new ActionItem("keyB", "Take Action A"));              
     arr.push(new ActionItem("keyC", "Take Action B"));
     arr.push(new SeperatorItem());
     arr.push(new OptionItem("keyA2", "Buy Apples", "", true));
@@ -166,6 +177,7 @@ static getDynamicItems() {
     arr.push(new SeperatorItem());
     arr.push(new OptionItem("keyO2", "Haarlem is the best place to live", "C"));
     arr.push(new OptionItem("keyO3", "Amsterdam is the best place to live", "C"));
+    return arr;
     return arr;
 }
 
@@ -203,11 +215,15 @@ ___
 ## Showtime!
 ### _A mixtures of Action, Option, Header and Seperator items!_
 
-![FixedItems.png](http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex2.png)
+![OptionsComplex2.png](http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex2.png)
 ```javascript
 static getDynamicItems() {
     var arr: DropDownItemBase[] = [];
-    arr.push(new ActionItem("booknow", "Book now!", "fa-plane"));
+    var item = new ActionItem("booknow", "Book now!", "fa-plane");
+    item.data = { pos };                            // save some random data with this item
+    item.addRightImage("fa-cog", "settings");
+    item.addRightImage("fa-window-close-o", "exit the application");
+    arr.push(item);
     arr.push(new SeperatorItem());
     arr.push(new HeaderItem("Choose your destination:"));
     arr.push(new OptionItem("california", "California and Santa Monica", "A"));
@@ -278,4 +294,5 @@ v 1.1.6 | Fix of position of dropdown if the parent has a scrollbar which is scr
 v 1.1.7 | TypeScript support (now part of the bundle)
 v 1.1.8 | Improved selector (how to target the correct element - updated code and docs)
 v 1.1.9 | Linked up with github
-
+v 1.1.10 | Added a missing 'createMenu' to TypeScript definition file index.d.ts
+v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some bug-fixes - now supports right images and more predictable popup placing.
