@@ -68,7 +68,7 @@ export class DropDownItemBase {
     }
 
     public render(imagesAreShown: boolean): JSX.Element {
-        return (<span className='dropdown-item'>not implemented</span>)
+        return (<span className='dda-dropdown-item'>not implemented</span>)
     }
 }
 
@@ -79,7 +79,7 @@ export class SeperatorItem extends DropDownItemBase {
     }
 
     public render(imagesAreShown: boolean) {
-        return <span className='dropdown-item seperator'></span>
+        return <span className='dda-dropdown-item seperator'></span>
     }
 
 }
@@ -94,7 +94,7 @@ export class HeaderItem extends DropDownItemBase {
     }
 
     public render(imagesAreShown: boolean) {
-        return <span className='dropdown-item' ref={(el) => { this.setTitle(el, this.header); }}>{this.header}</span>
+        return <span className='dda-dropdown-item' ref={(el) => { this.setTitle(el, this.header); }}>{this.header}</span>
     }
 
 }
@@ -139,7 +139,7 @@ export class ActionItem extends DropDownItem {
             cn = 'increase-left-margin';
 
         return (
-            <div className='dropdown-item'>
+            <div className='dda-dropdown-item'>
                 { this.renderLeftImage() }
                 <span className={'flex ' + cn } ref={(el) => { this.setTitle(el, this.text); }}>{this.text}</span>
                 { this.renderRightImages() }
@@ -211,7 +211,7 @@ export class OptionItem extends ActionItem {
 
     public render(imagesAreShown: boolean) {
         return (
-            <div className='dropdown-item' style={ { position: 'relative' } }>
+            <div className='dda-dropdown-item' style={ { position: 'relative' } }>
                 <span className={"img-check " + (this.groupBy.length > 0 ? ' option ' : '') + (this.isChecked ? ' checked ' : '')}></span>
                 <span className='flex has-img' ref={(el) => { this.setTitle(el, this.text); }}>{this.text}</span>
             </div>

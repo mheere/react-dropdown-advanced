@@ -1,6 +1,7 @@
 $item-height:32px;
 $font-size:14px;
 $border-colour: rgb(194, 194, 195);
+$border-colour-item: rgba(194, 194, 195, 0.5);
 $back-colour: white;
 $back-colour-hover: #F0F0F0;
 $back-colour-right-img-hover: #bbbdc361;
@@ -26,55 +27,20 @@ $back-colour-right-img-hover: #bbbdc361;
     flex: 1;
 }
 
-div.dda-container {
+.dda-container {
     
     position: absolute;
     z-index: 3;
     color: rgb(59, 64, 95);
+    box-shadow: rgb(202, 202, 183) 0px 0px 10px 1px;
     @include border-box();
 
-    .dropdown-item {
-        @include flexbox();
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        padding-left: 2px;
-        padding-right: 4px;
-        line-height:$item-height; 
-        vertical-align:middle; 
-        font-family: Roboto,sans-serif;
-        font-size: $font-size;
-
-        >.flex {
-            @include flexchild();
-            margin-left: 4px;
-            margin-right: 4px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            &.increase-left-margin {
-                margin-left: 24px;
-            }
-        }
-
-        >[data-img-right] {
-            border: 1px solid rgba(211, 211, 211, 0);
-            border-radius: 3px;
-            -webkit-transition: all 0.3s;
-            transition: all 0.3s;
-            &:hover {
-                border: 1px solid rgb(159, 158, 163);
-                background: $back-colour-right-img-hover;
-            }
-        }
-    }   
-
-    &.show>div.dropdown-list {
+    &.show>.dda-dropdown-list {
         display: block;
         text-align: left;
     }
 
-    div.dropdown-list {
+    .dda-dropdown-list {
         max-width: 200px;
         max-height: 260px;
         border: 2px solid $border-colour;
@@ -96,43 +62,44 @@ div.dda-container {
         > div {
             width:100%;
             background: $back-colour;
-            border-bottom: solid 1px $border-colour;
+            border-bottom: solid 1px $border-colour-item;
             @include border-box();
             -webkit-transition: background 0.2s; /* Safari */
             transition: background 0.2s;
+            
             &:hover {
                 background: $back-colour-hover;
             }
 
-        &.action {
-            cursor:pointer;
+            &.action {
+                cursor:pointer;
             }
 
-        &.option {
-            cursor:pointer;
+            &.option {
+                cursor:pointer;
             }
 
-        &.disabled {
-            color: #ababab;
-            background-color: #ebebeb0a;
-            cursor: default;
+            &.disabled {
+                color: #ababab;
+                background-color: #ebebeb0a;
+                cursor: default;
             }
 
-        &.seperator {
-            height: 3px;
-            background-color: #efebeb;
+            &.seperator {
+                height: 3px;
+                background-color: #efebeb;
             }
 
-        &.header {
-            line-height: 21px !important;
-            background-color: #adadad;
-            color: white;
-            cursor: default;
-            padding-left: 5px;
+            &.header {
+                line-height: 21px !important;
+                background-color: #adadad;
+                color: white;
+                cursor: default;
+                padding-left: 5px;
             }
 
-        &:last-child {
-            border-bottom: 0px;
+            &:last-child {
+                border-bottom: 0px;
             }
         }
 
@@ -144,6 +111,7 @@ div.dda-container {
             height: 11px;
             display: inline-block;
             border: 1px solid rgba(128, 128, 128, 0.541);
+            background-color: $back-colour;
 
             &.option {
                 border-radius: 6px;
@@ -153,6 +121,43 @@ div.dda-container {
                 background-color: orange;
             }
         }
-    
     }
+
+    .dda-dropdown-item {
+        @include flexbox();
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding-left: 2px;
+        padding-right: 4px;
+        line-height:$item-height; 
+        vertical-align:middle; 
+        font-family: Roboto,sans-serif;
+        font-size: $font-size;
+    
+        >.flex {
+            @include flexchild();
+            margin-left: 4px;
+            margin-right: 4px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            &.increase-left-margin {
+                margin-left: 24px;
+            }
+        }
+    
+        >[data-img-right] {
+            border: 1px solid rgba(211, 211, 211, 0);
+            border-radius: 3px;
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+            &:hover {
+                border: 1px solid rgb(159, 158, 163);
+                background: $back-colour-right-img-hover;
+            }
+        }
+    }  
 }
+
+ 

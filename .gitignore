@@ -1,5 +1,7 @@
 lib_sourcemap/
 lib_to_npm/
+dist/
+!dist/index.html
 node_modules/
 .npmignore
 .gitignore
