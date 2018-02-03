@@ -15,7 +15,7 @@ require('font-awesome/css/font-awesome.css');
 var dd = new DropDownControl('#ex1');
 //var dd = new DropDownControl('.ex-right-img');
 //var dd = new DropDownControl('#abc001');
-dd.setToRelativePositionIfNotSet = true;
+dd.setToRelativePositionIfNotSet = true;    
 
 // 2. specify the dropdown items
 dd.getItems = () => TestData.getItems("simple items");
@@ -171,7 +171,7 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
 
         var item = new ActionItem("setting", "System Settings", "fa-cog");
         item.addRightImage("fa-ellipsis-h", "popup config screen");
-        item.marginRight = 15;
+        item.textMarginRight = 15;
         this.fixedItems.push(item);
 
     }

@@ -15,13 +15,11 @@
         <div id='root'>
 
             <!-- <div id='strip'></div> -->
-            <h1 id='strip'>DropDown examples</h1>
+            <div id='strip'>DropDown examples</div>
 
             <div class="nav-l-2">
                 <ul>
-            
-                    <li id='test001' class="pull-right" title="User Info" style="position: absolute; right: 20px;"></li>
-                    
+                    <li id='test001' class="pull-right" title="User Info" style="position: absolute; right: 20px; padding-top: 11px"></li>
                 </ul>
             </div>
 
@@ -85,7 +83,7 @@ private onClick = (item: DropDownItem) => {
 
             <div class="column1" >
                 <div class='my-header'>Dynamic - Right image actions</div>
-                <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>" />
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/rightimages.png>" />
                 <div id="ex-right-img" class='example'>example</div>
             </div>
             <div class="column2" >
@@ -94,16 +92,19 @@ private onClick = (item: DropDownItem) => {
 ...
 private getDynamicItems = () => {
     var arr: DropDownItemBase[] = [];
-    var item = new ActionItem("A", "Holiday in France and other", "fa-user-o");
+    var item = new ActionItem("A", "Logout", "fa-download", true);
+    item.data = { pos };        // store some context data
     item.addRightImage("fa-cog", "settings");
     item.addRightImage("fa-window-close-o", "exit the application");
     arr.push(item);
-    item = new ActionItem("B", "Go to New York", "fa-user-o");
+    arr.push(new SeperatorItem());
+    item = new ActionItem("profile", "Show User Profile", "fa-user-o");
     item.addRightImage("fa-mail-forward", "forward this item");
+    item.textMarginRight = 30;  // force some distance
     arr.push(item);
-    arr.push(new ActionItem("B2", "Go to California and do some more", "fa-user-o"));
-    arr.push(new ActionItem("C", "Visit London", "fa-cog"));
-    arr.push(new ActionItem("C2", "Visit Amsterdam"));
+    arr.push(new ActionItem("bell", "Show outstanding alerts", "fa-bell"));
+    arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "fa-btc"));
+    arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
     return arr;
 }
 ...
@@ -213,7 +214,8 @@ static demoComplex = () => {
     // 2. specify the dropdown items callback
     dd.getItems = Test.getDynamicItems;
 
-    // 3. prevent the dropdown from closing when an ActionItem is clicked (you may wish to validate options and close the dropdown manually by calling .close())
+    // 3. prevent the dropdown from closing when an ActionItem is clicked (you may wish to 
+    //    validate options and close the dropdown manually by calling .close())
     dd.closeOnActionItemClick = false;
 
     // 4. place event handlers

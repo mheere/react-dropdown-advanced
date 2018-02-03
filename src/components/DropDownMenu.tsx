@@ -383,7 +383,7 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
             const style = this.state.listVisible ? this.getStyle() : {};
 
             // render the actual drop down
-            return <div className={"dda-container " + (this.state.listVisible ? "show" : "")} style={style}>
+            return <div className={"dda-container " + (this.state.listVisible ? "show" : "")} style={style} title=''>
                 <div className={'dda-dropdown-list ' + this.getDropDownClass()} >
                     {this.renderListItems()}
                 </div>

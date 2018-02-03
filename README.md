@@ -2,12 +2,13 @@
 # An advanced React Dropdown Component 
 ## Key features
 * caters for different types of dropdown items (action, checks, header, seperator) 
-* lazely calls back for dropdown items upon selection
+* lazily calls back for dropdown items
 * dropdown items are removed from the markup when dropdown is closed
 * a variety of events are raised on check, click, open/close etc
 * popup location is configurable (left/right/top/bottom)
 * the dropdown can be created through code using any html element as source
 * popup is closable through code
+* and much more!
 
 ## Demo
 Have a look at the [demo-page](http://www.reactdropdown.marcelheeremans.com) to see what the dropdown can do for you!
@@ -44,13 +45,14 @@ Bit boring, let's see what else we can do.
 private getDynamicItems = () => {
     var arr: DropDownItemBase[] = [];
     var item = new ActionItem("A", "Logout", "fa-download");
-    item.data = { pos };
+    item.data = { pos };        // associate some data with the item
     item.addRightImage("fa-cog", "settings");
     item.addRightImage("fa-window-close-o", "exit the application");
     arr.push(item);
     arr.push(new SeperatorItem());
     item = new ActionItem("profile", "Show User Profile", "fa-user-o");
     item.addRightImage("fa-mail-forward", "forward this item");
+    item.textMarginRight = 30;  // forces some extra space beteen the text and the right image
     arr.push(item);
     arr.push(new ActionItem("bell", "Show outstanding alerts", "fa-bell"));
     arr.push(new ActionItem("shortcuts", "Show Bitcoin Valuation", "fa-btc"));
@@ -63,9 +65,14 @@ private getDynamicItems = () => {
     <DropDownMenu getItems={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownRight} />
 </div>
 ```
-Bit more interesting. The code above **calls back for its items** when clicked.  So items can be (re)configured before returning the array with items.
+Bit more interesting. The code above **calls back for its items** when clicked.  So items can be (re)configured before returning the array with dropdown items.
 
-It also shows the use of right side images.  These can have their own tooltip and on clicking the image the item gets triggered as if it were selected itself.  The user can check the `clickedImage` property on the ActionItem to check if the user clicked the full item or the image specifically!
+It also shows the use of right side images.  These can have their own tooltip and on selection the item gets triggered as if it were selected itself.  The user can check the `clickedImage` property on the ActionItem to check if the user clicked the full item or the image specifically!
+
+The `data` property is a free data-storage property that can be used to attach some context and can be accessed when dealing with the clicked item.
+
+The `textMarginRight` property can be set to force additional margin between the text and its adjecent right hand image. 
+
 
 ## **Load the CSS!**
 Do not forget to load the rdropdown.css into your project (using a 'require' or other means)
@@ -143,7 +150,8 @@ There are four different types of DropdownItem to choose from
 *ActionItem* |imageLeft | string | identifies the 'left' image, this can either be a font awesome image (i.e. 'fa-user-o') or a google material-design-icon
 *ActionItem* |imageRight | RightImageInfo[] | an array of 'RightImageInfo' images (use addRightImage method to add these)
 *ActionItem* |isDisabled | boolean | if true, the item is shown in disabled state  
-*ActionItem* |marginRight | number | if > 0 this will be applied to the right-margin of the text of the dropdown item 
+*ActionItem* |data | object | handy storage for a data object that can be accessed when handling the clicked item later
+*ActionItem* |textMarginRight | number | if > 0 this will be applied to the right-margin of the text of the dropdown item 
 *OptionItem* | key | string | should be unique, if none is given then one is generated 
 *OptionItem* |text | string | the text shown to the user in the item 
 *OptionItem* |isDisabled | boolean | if true, the item is shown in disabled state
@@ -178,7 +186,6 @@ static getDynamicItems() {
     arr.push(new SeperatorItem());
     arr.push(new OptionItem("keyO2", "Haarlem is the best place to live", "C"));
     arr.push(new OptionItem("keyO3", "Amsterdam is the best place to live", "C"));
-    return arr;
     return arr;
 }
 
@@ -318,6 +325,6 @@ v 1.1.6 | Fix of position of dropdown if the parent has a scrollbar which is scr
 v 1.1.7 | TypeScript support (now part of the bundle)
 v 1.1.8 | Improved selector (how to target the correct element - updated code and docs)
 v 1.1.9 | Linked up with github
-v 1.1.10 | Added a missing 'createMenu' to TypeScript definition file index.d.ts
 v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some bug-fixes - now supports right images and more predictable popup placing.
 v 1.2.1 | Styling changes and additional customisation
+v 1.2.2 | Small styling changes

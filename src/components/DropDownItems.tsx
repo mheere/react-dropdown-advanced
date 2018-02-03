@@ -115,7 +115,7 @@ export class ActionItem extends DropDownItem {
     public imageRight: RightImageInfo[] = [];   // image (either fa or material)
     public className: string = "";          // any additional className info that is appended to the <i> image element
     public clickedImage: string = "";       // the name of the image that raised the clicked event (was clicked)
-    public marginRight: number = 0;         // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
+    public textMarginRight: number = 0;     // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean) {
         super(key, text);
@@ -141,9 +141,9 @@ export class ActionItem extends DropDownItem {
         
         let style = {};
 
-        if (this.marginRight > 0)
+        if (this.textMarginRight > 0)
             style = { 
-                marginRight: this.marginRight + "px"
+                marginRight: this.textMarginRight + "px"
             };
 
         return (
@@ -159,9 +159,9 @@ export class ActionItem extends DropDownItem {
         if (this.imageLeft.length == 0) return null;
 
         if (this.isImgFontAwesome(this.imageLeft))
-            return (<i className={"img-left fa fa-fw " + this.imageLeft + " " + this.className} title='' aria-hidden="true"></i>)
+            return (<i className={"img-left fa fa-fw " + this.imageLeft + " " + this.className} aria-hidden="true"></i>)
         else if (this.isImgMaterial(this.imageLeft))
-            return (<i className={"img-left material-icons material-icons-adjust " + this.className} title=''>{this.imageLeft}</i>)
+            return (<i className={"img-left material-icons material-icons-adjust " + this.className} >{this.imageLeft}</i>)
         else
             return undefined;
     }
