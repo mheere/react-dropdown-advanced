@@ -67,7 +67,7 @@ export class DropDownItemBase {
             el.setAttribute('title', title);
     }
 
-    public render(imagesAreShown: boolean): JSX.Element {
+    public render(adjustLeftMargin?: string): JSX.Element {
         return (<span className='dda-dropdown-item'>not implemented</span>)
     }
 }
@@ -78,7 +78,7 @@ export class SeperatorItem extends DropDownItemBase {
         super("");
     }
 
-    public render(imagesAreShown: boolean) {
+    public render() {
         return <span className='dda-dropdown-item seperator'></span>
     }
 
@@ -93,7 +93,7 @@ export class HeaderItem extends DropDownItemBase {
         this.header = header;
     }
 
-    public render(imagesAreShown: boolean) {
+    public render() {
         return <span className='dda-dropdown-item' ref={(el) => { this.setTitle(el, this.header); }}>{this.header}</span>
     }
 
@@ -116,6 +116,7 @@ export class ActionItem extends DropDownItem {
     public className: string = "";          // any additional className info that is appended to the <i> image element
     public clickedImage: string = "";       // the name of the image that raised the clicked event (was clicked)
     public textMarginRight: number = 0;     // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
+    public static useMaterialImage24: boolean = false;  // if set to true this will default to md-24 instead of md-18.
 
     constructor(key: string, text: string, image?: string, isDisabled?: boolean) {
         super(key, text);
@@ -127,6 +128,8 @@ export class ActionItem extends DropDownItem {
 
     private isImgFontAwesome(img: string): boolean { return img.startsWith("fa-") }
     private isImgMaterial(img: string): boolean { return !this.isImgFontAwesome(img) }
+    public isLeftImgFontAwesome(): boolean { return this.isImgFontAwesome(this.imageLeft) }
+    public isLeftImgMaterial(): boolean { return this.isImgMaterial(this.imageLeft) }
 
     public addRightImage(img: string, toolTip?: string) { this.imageRight.push(new RightImageInfo(img, toolTip)); }
 
@@ -134,10 +137,10 @@ export class ActionItem extends DropDownItem {
         return `*ActionItem* ${this.text} [${this.key}]`;
     }
 
-    public render(imagesAreShown: boolean) {
+    public render(adjustLeftMargin?: string) {
         var cn = "";
-        if (this.imageLeft.length == 0 && imagesAreShown) 
-            cn = 'increase-left-margin';
+        if (this.imageLeft.length == 0) 
+            cn = adjustLeftMargin;
         
         let style = {};
 
@@ -155,15 +158,22 @@ export class ActionItem extends DropDownItem {
         )
     }
 
+    private getMaterialClassName() {
+        if (this.className.includes("md-"))
+            return "material-icons " + this.className;
+        else
+            return "material-icons " + (ActionItem.useMaterialImage24 ? "md-24" : "md-18") + this.className;
+    }
+
     private renderLeftImage() {
         if (this.imageLeft.length == 0) return null;
 
         if (this.isImgFontAwesome(this.imageLeft))
             return (<i className={"img-left fa fa-fw " + this.imageLeft + " " + this.className} aria-hidden="true"></i>)
         else if (this.isImgMaterial(this.imageLeft))
-            return (<i className={"img-left material-icons material-icons-adjust " + this.className} >{this.imageLeft}</i>)
+            return (<i className={"img-left " + this.getMaterialClassName()} >{this.imageLeft}</i>)
         else
-            return undefined;
+            return undefined;  
     }
 
     private renderRightImages() {
@@ -180,7 +190,7 @@ export class ActionItem extends DropDownItem {
         if (this.isImgFontAwesome(image.imageRight))
             return (<i key={i} data-img-right={image.imageRight} title={image.toolTip} className={"img-right fa fa-fw " + image.imageRight + " " + this.className} aria-hidden="true" style={style}></i>)
         else if (this.isImgMaterial(image.imageRight))
-            return (<i key={i} data-img-right={image.imageRight} title={image.toolTip} className={"img-right material-icons material-icons-adjust " + this.className}>{image.imageRight}</i>)
+            return (<i key={i} data-img-right={image.imageRight} title={image.toolTip} className={"img-right " + this.getMaterialClassName()}>{image.imageRight}</i>)
         else
             return undefined;
     }
@@ -217,7 +227,7 @@ export class OptionItem extends ActionItem {
         return `*OptionItem* ${this.text} [${this.key}] - ${this.isChecked} [groupBy: ${this.groupBy}]`;
     }
 
-    public render(imagesAreShown: boolean) {
+    public render() {
         return (
             <div className='dda-dropdown-item' style={ { position: 'relative' } }>
                 <span className={"img-check " + (this.groupBy.length > 0 ? ' option ' : '') + (this.isChecked ? ' checked ' : '')}></span>

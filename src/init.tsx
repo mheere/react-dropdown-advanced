@@ -164,13 +164,28 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
     constructor(props: DropDownDemo1Props) {
         super(props);
 
-        this.fixedItems.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
-        this.fixedItems.push(new SeperatorItem());
-        this.fixedItems.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
-        this.fixedItems.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+        // this.fixedItems.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+        // this.fixedItems.push(new SeperatorItem());
+        // this.fixedItems.push(new ActionItem("profile", "Show Profile", "face"));        // fa-user-o
+        // this.fixedItems.push(new ActionItem("shortcuts", "Show Shortcuts", "report_problem"));  // fa-mail-forward
 
-        var item = new ActionItem("setting", "System Settings", "fa-cog");
-        item.addRightImage("fa-ellipsis-h", "popup config screen");
+        // var item = new ActionItem("setting", "System Settings", "fa-cog");
+        // item.addRightImage("fa-ellipsis-h", "popup config screen");
+        // item.textMarginRight = 15;
+        // this.fixedItems.push(item);
+
+
+        //ActionItem.useMaterialImage24 = true;
+
+        var item = new ActionItem("logout", "Logout", "exit_to_app");
+        //item.className = "md-24";
+        this.fixedItems.push(item); 
+        this.fixedItems.push(new SeperatorItem());
+        this.fixedItems.push(new ActionItem("profile", "Show Profile", "face")); 
+        this.fixedItems.push(new ActionItem("shortcuts", "Show Shortcuts"));
+
+        var item = new ActionItem("setting", "System Settings", "report_problem");
+        item.addRightImage("assignment_ind", "popup config screen");
         item.textMarginRight = 15;
         this.fixedItems.push(item);
 

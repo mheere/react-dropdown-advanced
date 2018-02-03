@@ -627,7 +627,7 @@ class DropDownItemBase {
         if (el.offsetWidth < el.scrollWidth)
             el.setAttribute('title', title);
     }
-    render(imagesAreShown) {
+    render(adjustLeftMargin) {
         return (React.createElement("span", { className: 'dda-dropdown-item' }, "not implemented"));
     }
 }
@@ -636,7 +636,7 @@ class SeperatorItem extends DropDownItemBase {
     constructor() {
         super("");
     }
-    render(imagesAreShown) {
+    render() {
         return React.createElement("span", { className: 'dda-dropdown-item seperator' });
     }
 }
@@ -647,7 +647,7 @@ class HeaderItem extends DropDownItemBase {
         this.header = "header";
         this.header = header;
     }
-    render(imagesAreShown) {
+    render() {
         return React.createElement("span", { className: 'dda-dropdown-item', ref: (el) => { this.setTitle(el, this.header); } }, this.header);
     }
 }
@@ -675,14 +675,16 @@ class ActionItem extends DropDownItem {
     get hasImg() { return this.imageLeft.length > 0; }
     isImgFontAwesome(img) { return img.startsWith("fa-"); }
     isImgMaterial(img) { return !this.isImgFontAwesome(img); }
+    isLeftImgFontAwesome() { return this.isImgFontAwesome(this.imageLeft); }
+    isLeftImgMaterial() { return this.isImgMaterial(this.imageLeft); }
     addRightImage(img, toolTip) { this.imageRight.push(new RightImageInfo(img, toolTip)); }
     ToString() {
         return `*ActionItem* ${this.text} [${this.key}]`;
     }
-    render(imagesAreShown) {
+    render(adjustLeftMargin) {
         var cn = "";
-        if (this.imageLeft.length == 0 && imagesAreShown)
-            cn = 'increase-left-margin';
+        if (this.imageLeft.length == 0)
+            cn = adjustLeftMargin;
         let style = {};
         if (this.textMarginRight > 0)
             style = {
@@ -693,13 +695,19 @@ class ActionItem extends DropDownItem {
             React.createElement("span", { className: 'flex ' + cn, ref: (el) => { this.setTitle(el, this.text); }, style: style }, this.text),
             this.renderRightImages()));
     }
+    getMaterialClassName() {
+        if (this.className.includes("md-"))
+            return "material-icons " + this.className;
+        else
+            return "material-icons " + (ActionItem.useMaterialImage24 ? "md-24" : "md-18") + this.className;
+    }
     renderLeftImage() {
         if (this.imageLeft.length == 0)
             return null;
         if (this.isImgFontAwesome(this.imageLeft))
             return (React.createElement("i", { className: "img-left fa fa-fw " + this.imageLeft + " " + this.className, "aria-hidden": "true" }));
         else if (this.isImgMaterial(this.imageLeft))
-            return (React.createElement("i", { className: "img-left material-icons material-icons-adjust " + this.className }, this.imageLeft));
+            return (React.createElement("i", { className: "img-left " + this.getMaterialClassName() }, this.imageLeft));
         else
             return undefined;
     }
@@ -715,11 +723,12 @@ class ActionItem extends DropDownItem {
         if (this.isImgFontAwesome(image.imageRight))
             return (React.createElement("i", { key: i, "data-img-right": image.imageRight, title: image.toolTip, className: "img-right fa fa-fw " + image.imageRight + " " + this.className, "aria-hidden": "true", style: style }));
         else if (this.isImgMaterial(image.imageRight))
-            return (React.createElement("i", { key: i, "data-img-right": image.imageRight, title: image.toolTip, className: "img-right material-icons material-icons-adjust " + this.className }, image.imageRight));
+            return (React.createElement("i", { key: i, "data-img-right": image.imageRight, title: image.toolTip, className: "img-right " + this.getMaterialClassName() }, image.imageRight));
         else
             return undefined;
     }
 }
+ActionItem.useMaterialImage24 = false; // if set to true this will default to md-24 instead of md-18.
 exports.ActionItem = ActionItem;
 class RightImageInfo {
     constructor(img, toolTip) {
@@ -745,7 +754,7 @@ class OptionItem extends ActionItem {
     toString() {
         return `*OptionItem* ${this.text} [${this.key}] - ${this.isChecked} [groupBy: ${this.groupBy}]`;
     }
-    render(imagesAreShown) {
+    render() {
         return (React.createElement("div", { className: 'dda-dropdown-item', style: { position: 'relative' } },
             React.createElement("span", { className: "img-check " + (this.groupBy.length > 0 ? ' option ' : '') + (this.isChecked ? ' checked ' : '') }),
             React.createElement("span", { className: 'flex has-img', ref: (el) => { this.setTitle(el, this.text); } }, this.text)));
@@ -1837,12 +1846,23 @@ class DropDownDemo1 extends React.Component {
             // pass it back up to the caller.
             this.props.clickHandler(item);
         };
-        this.fixedItems.push(new DropDownItems_1.ActionItem("logout", "Logout", "fa-window-close-o"));
+        // this.fixedItems.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+        // this.fixedItems.push(new SeperatorItem());
+        // this.fixedItems.push(new ActionItem("profile", "Show Profile", "face"));        // fa-user-o
+        // this.fixedItems.push(new ActionItem("shortcuts", "Show Shortcuts", "report_problem"));  // fa-mail-forward
+        // var item = new ActionItem("setting", "System Settings", "fa-cog");
+        // item.addRightImage("fa-ellipsis-h", "popup config screen");
+        // item.textMarginRight = 15;
+        // this.fixedItems.push(item);
+        //ActionItem.useMaterialImage24 = true;
+        var item = new DropDownItems_1.ActionItem("logout", "Logout", "exit_to_app");
+        //item.className = "md-24";
+        this.fixedItems.push(item);
         this.fixedItems.push(new DropDownItems_1.SeperatorItem());
-        this.fixedItems.push(new DropDownItems_1.ActionItem("profile", "Show Profile", "fa-user-o"));
-        this.fixedItems.push(new DropDownItems_1.ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
-        var item = new DropDownItems_1.ActionItem("setting", "System Settings", "fa-cog");
-        item.addRightImage("fa-ellipsis-h", "popup config screen");
+        this.fixedItems.push(new DropDownItems_1.ActionItem("profile", "Show Profile", "face"));
+        this.fixedItems.push(new DropDownItems_1.ActionItem("shortcuts", "Show Shortcuts"));
+        var item = new DropDownItems_1.ActionItem("setting", "System Settings", "report_problem");
+        item.addRightImage("assignment_ind", "popup config screen");
         item.textMarginRight = 15;
         this.fixedItems.push(item);
     }
@@ -19133,6 +19153,7 @@ class DropDownMenu extends React.Component {
     constructor(prop) {
         super(prop);
         this.isOpen = false;
+        this._usingFontAwesomeImages = true;
         // ensure that the client can't inadvertently keep the drop down logic flow
         this.asyncCallback = (cb) => {
             setTimeout(() => cb());
@@ -19159,6 +19180,9 @@ class DropDownMenu extends React.Component {
         //this.props.element.removeEventListener("click", this.show2);
     }
     componentDidUpdate(prevProps, prevState) {
+    }
+    hasFontAwesomeImgType() {
+        return this.getAllActionItems().find(item => item.isLeftImgFontAwesome()) != null;
     }
     // check if there are only Action items (well.. NO OptionItems..)
     hasOptionItems() {
@@ -19385,15 +19409,19 @@ class DropDownMenu extends React.Component {
         // if we are not showing the items then don't render the list!
         if (!this.state.listVisible)
             return null;
-        // check if ANY of the items is showing an 'image' (or checkbox), if so return true
-        // we need to know so we can adjust the item text width!
-        var imagesAreShown = () => {
-            if (this.showingImages() && this.props.alignText)
-                return true;
-            return false;
-        };
+        // check if ANY of the items is showing an 'image' (or checkbox) and if an item does not, and we wish 
+        // to alignText with the left images, then insert a left margin 
+        var adjustLeftMargin = "";
+        if (this.showingImages() && this.props.alignText) {
+            if (this.hasFontAwesomeImgType() || this.hasOptionItems())
+                adjustLeftMargin = "increase-left-margin-fa";
+            else if (DropDownItems_1.ActionItem.useMaterialImage24)
+                adjustLeftMargin = "increase-left-margin-md-24";
+            else
+                adjustLeftMargin = "increase-left-margin-md-18";
+        }
         // callback for any items and map these to something useful
-        return this.state.dropDownItems.map(item => (React.createElement("div", { key: item.key, className: item.ddclass, onClick: this.select.bind(this, item), style: { position: 'relative' } }, item.render(imagesAreShown()))));
+        return this.state.dropDownItems.map(item => (React.createElement("div", { key: item.key, className: item.ddclass, onClick: this.select.bind(this, item), style: { position: 'relative' } }, item.render(adjustLeftMargin))));
     }
     render() {
         if (this.state.element != null) {
@@ -19646,7 +19674,7 @@ exports = module.exports = __webpack_require__(8)(undefined);
 
 
 // module
-exports.push([module.i, ".dda-container {\n  position: absolute;\n  z-index: 3;\n  color: #3b405f;\n  box-shadow: #cacab7 0px 0px 10px 1px;\n  box-sizing: border-box;\n  -moz-box-sizing: border-box; }\n  .dda-container.show > .dda-dropdown-list {\n    display: block;\n    text-align: left; }\n  .dda-container .dda-dropdown-list {\n    max-width: 200px;\n    max-height: 260px;\n    border: 2px solid #c2c2c3;\n    overflow-y: auto;\n    overflow-x: hidden;\n    display: none;\n    box-sizing: border-box;\n    -moz-box-sizing: border-box; }\n    .dda-container .dda-dropdown-list i {\n      width: 20px;\n      height: 20px;\n      margin-top: 6px;\n      line-height: 20px; }\n      .dda-container .dda-dropdown-list i.img-left {\n        margin-top: 6px; }\n    .dda-container .dda-dropdown-list > div {\n      width: 100%;\n      background: white;\n      border-bottom: solid 1px rgba(194, 194, 195, 0.5);\n      box-sizing: border-box;\n      -moz-box-sizing: border-box;\n      -webkit-transition: background 0.2s;\n      /* Safari */\n      transition: background 0.2s; }\n      .dda-container .dda-dropdown-list > div:hover {\n        background: #F0F0F0; }\n      .dda-container .dda-dropdown-list > div.action {\n        cursor: pointer; }\n      .dda-container .dda-dropdown-list > div.option {\n        cursor: pointer; }\n      .dda-container .dda-dropdown-list > div.disabled {\n        color: #ababab;\n        background-color: #ebebeb0a;\n        cursor: default; }\n      .dda-container .dda-dropdown-list > div.seperator {\n        height: 3px;\n        background-color: #efebeb; }\n      .dda-container .dda-dropdown-list > div.header {\n        line-height: 21px !important;\n        background-color: #adadad;\n        color: white;\n        cursor: default;\n        padding-left: 5px; }\n      .dda-container .dda-dropdown-list > div:last-child {\n        border-bottom: 0px; }\n    .dda-container .dda-dropdown-list .img-check {\n      margin-top: 11px;\n      margin-left: 5px;\n      margin-right: 4px;\n      width: 11px;\n      height: 11px;\n      display: inline-block;\n      border: 1px solid rgba(128, 128, 128, 0.541);\n      background-color: white; }\n      .dda-container .dda-dropdown-list .img-check.option {\n        border-radius: 6px; }\n      .dda-container .dda-dropdown-list .img-check.checked {\n        background-color: orange; }\n  .dda-container .dda-dropdown-item {\n    display: -webkit-box;\n    display: -moz-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    padding-left: 2px;\n    padding-right: 4px;\n    line-height: 32px;\n    vertical-align: middle;\n    font-family: Roboto,sans-serif;\n    font-size: 14px; }\n    .dda-container .dda-dropdown-item > .flex {\n      -webkit-box-flex: 1;\n      -moz-box-flex: 1;\n      -ms-flex: 1;\n      -webkit-flex: 1;\n      flex: 1;\n      margin-left: 4px;\n      margin-right: 4px;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden; }\n      .dda-container .dda-dropdown-item > .flex.increase-left-margin {\n        margin-left: 24px; }\n    .dda-container .dda-dropdown-item > [data-img-right] {\n      border: 1px solid rgba(211, 211, 211, 0);\n      border-radius: 3px;\n      -webkit-transition: all 0.3s;\n      transition: all 0.3s; }\n      .dda-container .dda-dropdown-item > [data-img-right]:hover {\n        border: 1px solid #9f9ea3;\n        background: #bbbdc361; }\n", ""]);
+exports.push([module.i, ".dda-container {\n  position: absolute;\n  z-index: 3;\n  color: #3b405f;\n  box-shadow: #cacab7 0px 0px 10px 1px;\n  box-sizing: border-box;\n  -moz-box-sizing: border-box; }\n  .dda-container.show > .dda-dropdown-list {\n    display: block;\n    text-align: left; }\n  .dda-container .dda-dropdown-list {\n    max-width: 200px;\n    max-height: 260px;\n    border: 2px solid #c2c2c3;\n    overflow-y: auto;\n    overflow-x: hidden;\n    display: none;\n    box-sizing: border-box;\n    -moz-box-sizing: border-box; }\n    .dda-container .dda-dropdown-list i {\n      width: 20px;\n      height: 20px;\n      margin-top: 6px;\n      line-height: 20px; }\n      .dda-container .dda-dropdown-list i.img-left {\n        margin-top: 6px; }\n      .dda-container .dda-dropdown-list i.material-icons {\n        margin-right: 6px;\n        margin-left: 5px; }\n        .dda-container .dda-dropdown-list i.material-icons.material-icons.md-18 {\n          margin-right: 1px; }\n    .dda-container .dda-dropdown-list > div {\n      width: 100%;\n      background: white;\n      border-bottom: solid 1px rgba(194, 194, 195, 0.5);\n      box-sizing: border-box;\n      -moz-box-sizing: border-box;\n      -webkit-transition: background 0.2s;\n      /* Safari */\n      transition: background 0.2s; }\n      .dda-container .dda-dropdown-list > div:hover {\n        background: #F0F0F0; }\n      .dda-container .dda-dropdown-list > div.action {\n        cursor: pointer; }\n      .dda-container .dda-dropdown-list > div.option {\n        cursor: pointer; }\n      .dda-container .dda-dropdown-list > div.disabled {\n        color: #ababab;\n        background-color: #ebebeb0a;\n        cursor: default; }\n      .dda-container .dda-dropdown-list > div.seperator {\n        height: 3px;\n        background-color: #efebeb; }\n      .dda-container .dda-dropdown-list > div.header {\n        line-height: 21px !important;\n        background-color: #adadad;\n        color: white;\n        cursor: default;\n        padding-left: 5px; }\n      .dda-container .dda-dropdown-list > div:last-child {\n        border-bottom: 0px; }\n    .dda-container .dda-dropdown-list .img-check {\n      margin-top: 11px;\n      margin-left: 6px;\n      margin-right: 4px;\n      width: 11px;\n      height: 11px;\n      display: inline-block;\n      border: 1px solid rgba(128, 128, 128, 0.541);\n      background-color: white; }\n      .dda-container .dda-dropdown-list .img-check.option {\n        border-radius: 6px; }\n      .dda-container .dda-dropdown-list .img-check.checked {\n        background-color: orange; }\n  .dda-container .dda-dropdown-item {\n    display: -webkit-box;\n    display: -moz-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    overflow: hidden;\n    padding-left: 2px;\n    padding-right: 4px;\n    line-height: 32px;\n    vertical-align: middle;\n    font-family: Roboto,sans-serif;\n    font-size: 14px; }\n    .dda-container .dda-dropdown-item > .flex {\n      -webkit-box-flex: 1;\n      -moz-box-flex: 1;\n      -ms-flex: 1;\n      -webkit-flex: 1;\n      flex: 1;\n      margin-left: 4px;\n      margin-right: 4px;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      overflow: hidden; }\n      .dda-container .dda-dropdown-item > .flex.increase-left-margin-fa {\n        margin-left: 24px; }\n      .dda-container .dda-dropdown-item > .flex.increase-left-margin-md-18 {\n        margin-left: 30px; }\n      .dda-container .dda-dropdown-item > .flex.increase-left-margin-md-24 {\n        margin-left: 35px; }\n    .dda-container .dda-dropdown-item > [data-img-right] {\n      border: 1px solid rgba(211, 211, 211, 0);\n      border-radius: 3px;\n      -webkit-transition: all 0.3s;\n      transition: all 0.3s; }\n      .dda-container .dda-dropdown-item > [data-img-right]:hover {\n        border: 1px solid #9f9ea3;\n        background: #bbbdc361; }\n\n/* Rules for sizing the icon. */\n.material-icons.md-18 {\n  font-size: 18px; }\n\n.material-icons.md-24 {\n  font-size: 24px; }\n\n.material-icons.md-36 {\n  font-size: 36px; }\n\n.material-icons.md-48 {\n  font-size: 48px; }\n\n/* Rules for using icons as black on a light background. */\n.material-icons.md-dark {\n  color: rgba(0, 0, 0, 0.54); }\n\n.material-icons.md-dark.md-inactive {\n  color: rgba(0, 0, 0, 0.26); }\n\n/* Rules for using icons as white on a dark background. */\n.material-icons.md-light {\n  color: white; }\n\n.material-icons.md-light.md-inactive {\n  color: rgba(255, 255, 255, 0.3); }\n", ""]);
 
 // exports
 
@@ -19786,7 +19814,7 @@ exports = module.exports = __webpack_require__(8)(undefined);
 
 
 // module
-exports.push([module.i, "* {\n  box-sizing: border-box; }\n\nbody {\n  width: 100%;\n  height: 100%;\n  margin: 0px;\n  padding: 0px;\n  font-family: Roboto,sans-serif;\n  font-size: 14px; }\n\n#strip {\n  height: 55px;\n  padding: 10px 0 10px 30px;\n  background-color: #888882;\n  color: #f7f7f7;\n  width: 100%;\n  font-size: xx-large;\n  font-weight: bold; }\n\n#root .nav-l-2 {\n  height: 30px;\n  border-top: 1px solid transparent;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  -webkit-user-select: none;\n  user-select: none; }\n\n.pull-right {\n  float: right !important; }\n\n#root .nav-l-2 ul {\n  list-style: none;\n  padding: 0;\n  margin: 0; }\n\n#root .nav-l-2 ul li a {\n  padding: 6px 10px 5px 10px;\n  display: block; }\n\n.example {\n  width: 100px;\n  text-align: center;\n  background-color: #dadada;\n  color: #331717;\n  margin-top: 10px;\n  margin-left: 120px;\n  padding: 3px;\n  border: 2px solid #235d7d;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-transition: border 0.3s;\n  transition: border 0.3s; }\n\n.example:hover {\n  border: 2px solid #a7a721; }\n\n.column1 {\n  float: left;\n  width: 30%;\n  padding: 10px;\n  border-top: 1px solid darkgray; }\n\n.column2 {\n  float: left;\n  width: 70%;\n  padding: 10px;\n  border-left: 1px solid darkgray;\n  border-top: 1px solid darkgray; }\n\n.column {\n  float: left;\n  width: 20%;\n  padding: 10px;\n  border-right: 1px solid darkgray; }\n\n.row:after {\n  content: \"\";\n  display: table;\n  clear: both; }\n\n@media (max-width: 800px) {\n  .column1 {\n    width: 100%; }\n  .column2 {\n    width: 100%;\n    border-top: 0px;\n    border-left: 0px; } }\n\n.my-header {\n  text-align: center;\n  font-size: 1.3em;\n  font-weight: bold;\n  padding: 20px 0; }\n\n#root2 {\n  display: inline-block;\n  padding: 10px;\n  width: 100px;\n  background: #b12626;\n  color: white; }\n", ""]);
+exports.push([module.i, "* {\n  box-sizing: border-box; }\n\nbody {\n  width: 100%;\n  height: 100%;\n  margin: 0px;\n  padding: 0px;\n  font-family: Roboto,sans-serif;\n  font-size: 14px; }\n\n.material-icons.md-18 {\n  font-size: 18px; }\n\n#strip {\n  height: 55px;\n  padding: 10px 0 10px 30px;\n  background-color: #888882;\n  color: #f7f7f7;\n  width: 100%;\n  font-size: xx-large;\n  font-weight: bold; }\n\n#root .nav-l-2 {\n  height: 30px;\n  border-top: 1px solid transparent;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  -webkit-user-select: none;\n  user-select: none; }\n\n.pull-right {\n  float: right !important; }\n\n#root .nav-l-2 ul {\n  list-style: none;\n  padding: 0;\n  margin: 0; }\n\n#root .nav-l-2 ul li a {\n  padding: 6px 10px 5px 10px;\n  display: block; }\n\n.example {\n  width: 100px;\n  text-align: center;\n  background-color: #dadada;\n  color: #331717;\n  margin-top: 10px;\n  margin-left: 120px;\n  padding: 3px;\n  border: 2px solid #235d7d;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-transition: border 0.3s;\n  transition: border 0.3s; }\n\n.example:hover {\n  border: 2px solid #a7a721; }\n\n.column1 {\n  float: left;\n  width: 30%;\n  padding: 10px;\n  border-top: 1px solid darkgray; }\n\n.column2 {\n  float: left;\n  width: 70%;\n  padding: 10px;\n  border-left: 1px solid darkgray;\n  border-top: 1px solid darkgray; }\n\n.column {\n  float: left;\n  width: 20%;\n  padding: 10px;\n  border-right: 1px solid darkgray; }\n\n.row:after {\n  content: \"\";\n  display: table;\n  clear: both; }\n\n@media (max-width: 800px) {\n  .column1 {\n    width: 100%; }\n  .column2 {\n    width: 100%;\n    border-top: 0px;\n    border-left: 0px; } }\n\n.my-header {\n  text-align: center;\n  font-size: 1.3em;\n  font-weight: bold;\n  padding: 20px 0; }\n\n#root2 {\n  display: inline-block;\n  padding: 10px;\n  width: 100px;\n  background: #b12626;\n  color: white; }\n", ""]);
 
 // exports
 

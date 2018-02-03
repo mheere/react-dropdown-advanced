@@ -65,6 +65,7 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
     public isOpen: boolean = false;
     private _lastItem: DropDownItem;
+    private _usingFontAwesomeImages: boolean = true;
 
     public componentDidMount() {
         
@@ -80,6 +81,10 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
     public componentDidUpdate(prevProps: any, prevState: any) {
 
+    }
+
+    private hasFontAwesomeImgType(): boolean {
+        return this.getAllActionItems().find(item => item.isLeftImgFontAwesome()) != null;
     }
 
     // check if there are only Action items (well.. NO OptionItems..)
@@ -359,18 +364,22 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         // if we are not showing the items then don't render the list!
         if (!this.state.listVisible) return null;
           
-        // check if ANY of the items is showing an 'image' (or checkbox), if so return true
-        // we need to know so we can adjust the item text width!
-        var imagesAreShown = () => {
-            if (this.showingImages() && this.props.alignText)
-                return true;
-            return false;
+        // check if ANY of the items is showing an 'image' (or checkbox) and if an item does not, and we wish 
+        // to alignText with the left images, then insert a left margin 
+        var adjustLeftMargin = "";
+        if (this.showingImages() && this.props.alignText) {
+            if (this.hasFontAwesomeImgType() || this.hasOptionItems())
+                adjustLeftMargin = "increase-left-margin-fa";
+            else if (ActionItem.useMaterialImage24)
+                adjustLeftMargin = "increase-left-margin-md-24";
+            else
+                adjustLeftMargin = "increase-left-margin-md-18";
         }
 
         // callback for any items and map these to something useful
         return this.state.dropDownItems.map(item => (
             <div key={item.key} className={item.ddclass} onClick={this.select.bind(this, item)} style={ { position: 'relative' } }>
-                { item.render(imagesAreShown()) }
+                { item.render(adjustLeftMargin) }
             </div>
         ));
     }

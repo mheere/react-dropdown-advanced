@@ -283,7 +283,7 @@ static demoComplex = () => {
 
 # Styling the Dropdown
 
-It's easy to customise the dropdown to change its look. The easiest way is to simply include this snippet somewhere in your own css.
+It's easy to customise the dropdown and change its look. The easiest way is to simply include this snippet somewhere in your own css.
 
 ```javascript
 .dda-dropdown-list {
@@ -303,6 +303,30 @@ It's easy to customise the dropdown to change its look. The easiest way is to si
 to get a look like this:
 
 ![CustomStyling.png](http://www.reactdropdown.marcelheeremans.com/pics/CustomStyling.png)
+
+# Google Material Design Icons
+
+Try not to mix Font Awesome images with Material-Icons.  It will work but there may be some css margin issues.
+
+You can use material-icons by simple passing the name into the ActionItem image field (as you would do for font-awesome).  However, I have chosen to use the smaller image of md-18 as default but if you wish to use the google default then either set the className property of the DropDown item to 'md-24' or apply this globally by setting the static property like this: `ActionItem.useMaterialImage24 = true;` 
+
+An example of using material-design images is shown below:
+
+```javascript
+var item = new ActionItem("logout", "Logout", "exit_to_app");
+//item.className = "md-24";     // use this to enlarge the image
+this.fixedItems.push(item); 
+this.fixedItems.push(new SeperatorItem());
+this.fixedItems.push(new ActionItem("profile", "Show Profile", "face")); 
+this.fixedItems.push(new ActionItem("shortcuts", "Show Shortcuts"));
+
+var item = new ActionItem("setting", "System Settings", "report_problem");
+item.addRightImage("assignment_ind", "popup config screen");
+item.textMarginRight = 15;
+this.fixedItems.push(item);
+```
+![MaterialIcons.png](http://www.reactdropdown.marcelheeremans.com/pics/MaterialIcons.png)
+
 
 # Further Comments
 
@@ -328,3 +352,4 @@ v 1.1.9 | Linked up with github
 v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some bug-fixes - now supports right images and more predictable popup placing.
 v 1.2.1 | Styling changes and additional customisation
 v 1.2.2 | Small styling changes
+v 1.2.3 | Better Google Material-Design icons support

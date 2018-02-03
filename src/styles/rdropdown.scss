@@ -57,6 +57,13 @@ $back-colour-right-img-hover: #bbbdc361;
             &.img-left {
                 margin-top: 6px;
             }
+            &.material-icons {
+                margin-right: 6px;
+                margin-left: 5px;
+                &.material-icons.md-18 { 
+                    margin-right: 1px;
+                }
+            }
         }
 
         > div {
@@ -105,7 +112,7 @@ $back-colour-right-img-hover: #bbbdc361;
 
         .img-check {
             margin-top: 11px;
-            margin-left: 5px;
+            margin-left: 6px;
             margin-right: 4px;
             width: 11px;
             height: 11px;
@@ -142,8 +149,14 @@ $back-colour-right-img-hover: #bbbdc361;
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-            &.increase-left-margin {
+            &.increase-left-margin-fa {
                 margin-left: 24px;
+            }
+            &.increase-left-margin-md-18 {
+                margin-left: 30px;
+            }
+            &.increase-left-margin-md-24 {
+                margin-left: 35px;
             }
         }
     
@@ -160,4 +173,19 @@ $back-colour-right-img-hover: #bbbdc361;
     }  
 }
 
+
+// http://google.github.io/material-design-icons/
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
  

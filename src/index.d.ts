@@ -64,6 +64,7 @@
         clickedImage: string;
         textMarginRight: number;
         addRightImage(img: string, tooltip?: string): void;
+        //static useMaterialImage24: boolean;
     }
 
     interface ActionItemConstructor {
