@@ -353,3 +353,4 @@ v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some
 v 1.2.1 | Styling changes and additional customisation
 v 1.2.2 | Small styling changes
 v 1.2.3 | Better Google Material-Design icons support
+v 1.2.4 | Update in TypeScript index.d.ts
