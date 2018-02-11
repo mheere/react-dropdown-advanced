@@ -64,6 +64,7 @@ body {
 }
 
 .example {
+    position: relative;
     width: 100px;
     text-align: center;
     background-color: #dadada;
@@ -82,42 +83,75 @@ body {
     border: 2px solid rgb(167, 167, 33);
 }
 
+.flex-row {
+    display: flex;
+}
+
 .column1 {
-    float: left;
-    width: 30%;
+    width: 400px;
     padding: 10px;
     border-top: 1px solid darkgray;
 }
 
 .column2 {
-    float: left;
-    width: 70%;
+    flex: 1;
+    overflow-x: auto;
     padding: 10px;
     border-left: 1px solid darkgray;
     border-top: 1px solid darkgray;
 }
 
-.column {
-    float: left;
-    width: 20%;
-    padding: 10px;
-    border-right: 1px solid darkgray;
+pre {
+    white-space: pre-wrap;
 }
 
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
+// .row:after {
+//     content: "";
+//     display: table;
+//     clear: both;
+// }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
+    pre {
+        white-space: pre;
+    }
+
     .column1 {
+        width: 250px;
+    }
+
+    .column2 {
+        overflow-x: auto;
+    }
+   
+    .example {
+        margin-left: 50px;
+    }
+}
+
+@media (max-width: 600px) {
+    pre {
+        white-space: pre;
+    }
+
+    .flex-row {
+        display: inline;
+        position: relative;
+    }
+    .column1 {
+        position: relative;
         width: 100%;
     }
     .column2 {
-        width: 100%;
+        overflow-x: auto;
         border-top: 0px;
         border-left: 0px
+    }
+    .example {
+        position: absolute;
+        top: 70px;
+        left: 190px;
+        line-height: 40px;
     }
 }
 

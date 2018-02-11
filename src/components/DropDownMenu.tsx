@@ -258,13 +258,16 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
     private getStyle() {
 
+        // get the current complete style of the source element (NOT this.state.element.style)
+        var sourceElStyle = window.getComputedStyle(this.state.element);
+
         // if the source element does not have a 'position' set then we'll set it to 'relative'
-        var posNotSet = this.state.element.style.position == "";
+        var posNotSet = sourceElStyle.position == "" || sourceElStyle.position == "static";
         if (posNotSet && this.props.setRelativePosition)
             this.state.element.style.position = "relative";
 
-        var posRelative = this.state.element.style.position == "relative";
-        var posAbsolute = this.state.element.style.position == "absolute";
+        var posRelative = sourceElStyle.position == "relative";
+        var posAbsolute = sourceElStyle.position == "absolute";
         
         var coords = __utils.getCoords(this.state.element);
         var styleDownLeft, styleDownRight, styleUpLeft, styleUpRight;

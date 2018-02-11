@@ -354,3 +354,4 @@ v 1.2.1 | Styling changes and additional customisation
 v 1.2.2 | Small styling changes
 v 1.2.3 | Better Google Material-Design icons support
 v 1.2.4 | Update in TypeScript index.d.ts
+v 1.2.5 | Fix for positioning of popup (static pos)

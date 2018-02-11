@@ -19,13 +19,15 @@
 
             <div class="nav-l-2">
                 <ul>
-                    <li id='test001' class="pull-right" title="User Info" style="position: absolute; right: 20px; padding-top: 11px"></li>
+                    <li id='test001' class="pull-right" title="User Info" 
+                        style="position: absolute; right: 20px; padding-top: 11px; z-index: 1;"></li>
                 </ul>
             </div>
 
         </div>
 
         <div class="row">
+            <div class="flex-row">
             <div class="column1" >
                 <div class='my-header'>Simple 'fixed'</div>
                 <img src="http://www.reactdropdown.marcelheeremans.com/pics/fixeditems.png>" />
@@ -52,8 +54,10 @@ private onClick = (item: DropDownItem) => {
 &gt;
 </code></pre>
             </div>
+            </div>
 
 
+<div class="flex-row">
 <div class="column1" >
         <div class='my-header'>Dynamic items</div>
         <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>" />
@@ -62,25 +66,26 @@ private onClick = (item: DropDownItem) => {
     <div class="column2" >
         <h4>Code example</h4>
     <pre><code>
-    ...
-    private getDynamicItems = () => {
-        var arr: DropDownItemBase[] = [];
-        arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
-        arr.push(new SeperatorItem());
-        arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
-        arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
-        arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
-        return arr;
-    }
-    ...
-    &lt;div id='test-menu-lt'>
-        fixed items
-        &lt;DropDownMenu items={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownLeft} /&gt;
-    &gt;
+...
+private getDynamicItems = () => {
+    var arr: DropDownItemBase[] = [];
+    arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+    arr.push(new SeperatorItem());
+    arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
+    arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+    arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+    return arr;
+}
+...
+&lt;div id='test-menu-lt'>
+    fixed items
+    &lt;DropDownMenu items={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownLeft} /&gt;
+&gt;
     </code></pre>
 </div>
+</div>
 
-
+<div class="flex-row">
             <div class="column1" >
                 <div class='my-header'>Dynamic - Right image actions</div>
                 <img src="http://www.reactdropdown.marcelheeremans.com/pics/rightimages.png>" />
@@ -114,9 +119,10 @@ private getDynamicItems = () => {
 &gt;
 </code></pre>
             </div>
+            </div>  
 
 
-
+            <div class="flex-row">
             <div class="column1" >
                 <div class='my-header'>Radio/Option mixed</div>
                 <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png>" />
@@ -171,10 +177,11 @@ static demoComplex = () => {
     dd.createMenu();
 }
 </code></pre>
-            </div>                    
+            </div>   
+            </div>                 
 
 
-
+            <div class="flex-row">
             <div class="column1" >
                     <div class='my-header'>Showcase</div>
                     <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex2.png>" />
@@ -236,6 +243,7 @@ static demoComplex = () => {
     
     </code></pre>
                 </div>   
+                </div>
           
         </div>
         
