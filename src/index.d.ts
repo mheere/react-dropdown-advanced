@@ -98,9 +98,10 @@
         setToRelativePositionIfNotSet: boolean;
         
         onClick?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
-        onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
+        onClose?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onChecked?: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
         onOpened?: () => void;
+        onHover?: (item: DropDownItem) => void;
 
         items: DropDownItemBase[]; 
         getItems: () => DropDownItemBase[];

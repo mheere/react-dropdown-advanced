@@ -128,6 +128,7 @@ Type | Name | args/value (default) | Description |
 *event* | onClose | (item, checkedOptionItems, allOptionItems) => void | raised when Dropdown Menu closes, first returned item is the last item that was clicked|
 *event* | onClick | (item, checkedOptionItems, allOptionItems) => void   | called when user clicks on either an Action or Option item |
 *event* | onChecked | (optionItem, checkedOptionItems, allOptionItems) => void   | called when user checks or unchecks an Option item |
+*event* | onHover | (item) => void   | called when user hovers over a dropdown item (item is null if we moved out of the item)|
 *property* | direction | `DownRight` | direction the popup will show when opened |
 *property* | alignText | `true` | true will force ActionItems that have no image to be aligned with ActionItems that do have an image or with OptionItems (example given at 'Other' section below)  |
 *property* | closeOnActionItemClick | `true` | Set to false for the Dropdown Menu to stay visible on clicking an ActionItem |
@@ -344,14 +345,16 @@ If an ActionItem with and without images are shown then their display text is al
 
 |version | Notes |
 | ---- | ------ |
-v 1.1.3 | Initial release... (some issues with the prior ones...)
-v 1.1.6 | Fix of position of dropdown if the parent has a scrollbar which is scrolled down
-v 1.1.7 | TypeScript support (now part of the bundle)
-v 1.1.8 | Improved selector (how to target the correct element - updated code and docs)
-v 1.1.9 | Linked up with github
-v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some bug-fixes - now supports right images and more predictable popup placing.
-v 1.2.1 | Styling changes and additional customisation
-v 1.2.2 | Small styling changes
-v 1.2.3 | Better Google Material-Design icons support
-v 1.2.4 | Update in TypeScript index.d.ts
+v 1.2.6 | Added onHover support
 v 1.2.5 | Fix for positioning of popup (static pos)
+v 1.2.4 | Update in TypeScript index.d.ts
+v 1.2.3 | Better Google Material-Design icons support
+v 1.2.2 | Small styling changes
+v 1.2.1 | Styling changes and additional customisation
+v 1.2.0 | Small but breaking change in the signature of the ActionItem plus some bug-fixes - now supports right images and more predictable popup placing.
+v 1.1.9 | Linked up with github
+v 1.1.8 | Improved selector (how to target the correct element - updated code and docs)
+v 1.1.7 | TypeScript support (now part of the bundle)
+v 1.1.6 | Fix of position of dropdown if the parent has a scrollbar which is scrolled down
+v 1.1.3 | Initial release... (some issues with the prior ones...)
+
