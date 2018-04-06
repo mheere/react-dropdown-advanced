@@ -16,6 +16,7 @@ interface I_Dropdown_Props {
     onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     onChecked?: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     onOpened?: () => void;
+    onHover?: (item: DropDownItem) => void;
     maxHeight?: number;
     alignText?: boolean;
     setRelativePosition? : boolean;
@@ -40,6 +41,7 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         onClose: () => {},
         onChecked: () => {},
         onOpened: () => {},
+        onHover: () => {},
         maxHeight: 260,
         alignText: true,
         setRelativePosition: true
@@ -181,6 +183,27 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
     }
 
+    private mouseEnter(item: DropDownItem, e: any) {
+        
+        // stop this event bubbling up...
+        e.nativeEvent.stopImmediatePropagation();
+
+        // don't process seperator items
+        if (item.isSeperatorItem) return;
+
+        // raise the hover signal
+        this.raiseOnHover(item);
+    }
+
+    private mouseLeave(item: DropDownItem, e: any) {
+        
+        // stop this event bubbling up...
+        e.nativeEvent.stopImmediatePropagation();
+
+        // raise the hover signal (empty item)
+        this.raiseOnHover(null);
+    }
+
     private show() {
 
         // update the internal react state
@@ -223,6 +246,10 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
     private raiseOnChecked(optionItem: OptionItem) {
         this.asyncCallback(() => this.props.onChecked(optionItem, this.getCheckedOptionItems(), this.getAllOptionItems()));
+    }
+
+    private raiseOnHover(item: DropDownItem) {
+        this.asyncCallback(() => this.props.onHover(item));
     }
 
     // ensure that the client can't inadvertently keep the drop down logic flow
@@ -342,17 +369,6 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         });
     }
 
-    // ensure a 'title' is set if the dropdown item is showing ellipses
-    private setTitle(el: any, title: string) {
-        if (el == null) return;
-
-        // enure no title is shown if we are within the width (even if the target did specify one)
-        el.setAttribute('title', "");
-
-        if (el.offsetWidth < el.scrollWidth)  
-            el.setAttribute('title', title);
-    }
-
     private lookForParent(el: any) {
         // if nothing is given then exit
         if (!el) return;
@@ -381,8 +397,11 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
         // callback for any items and map these to something useful
         return this.state.dropDownItems.map(item => (
-            <div key={item.key} className={item.ddclass} onClick={this.select.bind(this, item)} style={ { position: 'relative' } }>
-                { item.render(adjustLeftMargin) }
+            <div key={item.key} className={item.ddclass} style={ { position: 'relative' } } 
+                onClick={this.select.bind(this, item)} 
+                onMouseEnter={this.mouseEnter.bind(this, item)} 
+                onMouseLeave={this.mouseLeave.bind(this, item)} >
+                    { item.render(adjustLeftMargin) }
             </div>
         ));
     }
@@ -419,6 +438,7 @@ export class DropDownControl {
     public onClose: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     public onChecked: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     public onOpened: () => void;
+    public onHover: (item: DropDownItem) => void;
     public alignText: boolean = true;   // if true, we align any ActionItems that have no image with ActionItem(s) that do have an image or OptionItems (since these always have an 'image')
     public setToRelativePositionIfNotSet: boolean = true;     // this ensures we will set the element to have a position of 'relative' if it wasn't set!
     private __closeHelper: CloseHelper = new CloseHelper();
@@ -496,6 +516,7 @@ export class DropDownControl {
             onClose={this.onClose}
             onChecked={this.onChecked}
             onOpened={this.onOpened}
+            onHover={this.onHover}
             />, newDiv);
     }
 
