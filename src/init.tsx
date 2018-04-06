@@ -206,10 +206,8 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
         if (item)
             console.log(`Hovering over item: '${item.text}' [key: ${item.key}]`);
         else
-            console.log("Ho hover");
+            console.log("No hover");
 
-        // pass it back up to the caller.
-        //this.props.clickHandler(item);
     }
 
     render() {

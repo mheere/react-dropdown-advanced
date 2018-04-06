@@ -118,21 +118,6 @@
 
     // ------------------------------------
 
-    // interface Dropdown_Props {
-    //     direction?: DropDownDirection;
-    //     closeOnActionItemClick?: boolean;
-    //     closeOnOptionItemClick?: boolean;
-    //     items?: DropDownItemBase[]; 
-    //     getItems?: () => DropDownItemBase[];
-    //     onClick?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
-    //     onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
-    //     onChecked?: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
-    //     onOpened?: () => void;
-    //     //maxHeight?: number;
-    //     alignText?: boolean;
-    //     setRelativePosition? : boolean;
-    // }
-
     export var DropDownMenu: any;
 
     // ------------------------------------
