@@ -105,6 +105,7 @@
 
         items: DropDownItemBase[]; 
         getItems: () => DropDownItemBase[];
+        getItemsAsync: () => Promise<DropDownItemBase[]>;
         
         close(): void;
         createMenu(): void;

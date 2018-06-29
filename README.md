@@ -2,19 +2,19 @@
 # An advanced React Dropdown Component 
 ## Key features
 * caters for different types of dropdown items (action, checks, header, seperator) 
-* lazily calls back for dropdown items
+* lazily calls back for dropdown items (synchronously or asynchronously!)
 * dropdown items are removed from the markup when dropdown is closed
-* a variety of events are raised on check, click, open/close etc
+* a variety of life-cycle events are raised on check, click, open/close etc
 * popup location is configurable (left/right/top/bottom)
 * the dropdown can be created through code using any html element as source
 * popup is closable through code
 * and much more!
 
 ## Demo
-Have a look at the [demo-page](http://www.reactdropdown.marcelheeremans.com) to see what the dropdown can do for you!
+Have a look at the [demo-page](http://www.reactdropdown.marcelheeremans.com) to check it out!
 
 ## Typescript
-Because I believe in typesafe code!  The code snippets below are extract from my Typescript test project.  An `index.d.ts` file has now been included within the bundle and should in most cases automatically give you intellisense.
+Because I believe in typesafe code!  The code snippets below are extracts from my Typescript test project.  An `index.d.ts` file has now been included within the bundle and should provide intellisense in your code.
 
 # Using the DropDown
 
@@ -73,6 +73,32 @@ The `data` property is a free data-storage property that can be used to attach s
 
 The `textMarginRight` property can be set to force additional margin between the text and its adjecent right hand image. 
 
+
+## Dynamic **Async** dropdown items (calls back asynchronously for dropdown items)
+
+```javascript
+...
+private getItemsAsync = () => {
+    return new Promise<DropDownItemBase[]>((resolve, reject) => {
+        setTimeout( () => {
+            var arr: DropDownItemBase[] = [];
+            arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+            arr.push(new SeperatorItem());
+            arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
+            arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+            arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+        
+            resolve(arr);
+        } , 1000);
+    });
+}
+
+<div id='test-menu-lt'>
+    dynamic
+    <DropDownMenu getItemsAsync={this.getItemsAsync} onClick={this.onClick} direction={DropDownDirection.DownRight} />
+</div>
+```
+The code above calls back and expects to be given an ES6 Promise.  On resolving the promise it returns the array of dropdown items.
 
 ## **Load the CSS!**
 Do not forget to load the rdropdown.css into your project (using a 'require' or other means)
