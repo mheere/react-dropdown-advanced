@@ -69,6 +69,40 @@ dd2.onClose = (item) => {
 dd2.createMenu();
 
 
+// -----------------------------
+
+ // 1. create a new DropDownControl for this element
+ var el2 = document.getElementById('ex-dyn-async');
+var dd2 = new DropDownControl(el2);
+
+// 2. specify the dropdown items
+dd2.getItemsAsync = () => {
+    return new Promise<DropDownItemBase[]>((resolve, reject) => {
+        setTimeout( () => resolve(TestData.getItems("dynamic items")), 1000);
+    });
+}
+
+// 3. 
+dd2.closeOnActionItemClick = true;
+
+// 4. place event handlers
+dd2.onClick = (item) => {
+    console.log(`Item '${item.key}' was clicked. [key: ${item.key}]`);
+    //if (item.key == "cancel") dd.
+}
+dd2.onChecked = (item, checkedOptionItems, allCheckedOptionItems) => {
+    console.log(`'${item.text}' was clicked [checked: ${item.isChecked}]`);
+}
+dd2.onClose = (item) => {
+    var txt = item ? item.text : " no item was clicked";
+    console.log("popup closed - last item: " + txt);
+};
+
+ // 4. create the react dropdown
+dd2.createMenu();
+
+
+
 // 1. create a new DropDownControl for this element
 //var dd = new DropDownControl('#ex1');
 var dd = new DropDownControl('#ex-right-img');
@@ -210,11 +244,27 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
 
     }
 
+    private getItemsAsync = () => {
+        return new Promise<DropDownItemBase[]>((resolve, reject) => {
+            setTimeout( () => {
+                var arr: DropDownItemBase[] = [];
+                arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+                arr.push(new SeperatorItem());
+                arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
+                arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+                arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+            
+                resolve(arr)
+            } , 100);
+        });
+    }
+
     render() {
         return <div id='root2'>
                     user: marcel
                     <DropDownMenu 
-                        items={this.fixedItems} 
+                        getItemsAsync={this.getItemsAsync}
+                        //items={this.fixedItems} 
                         onClick={this.onClick} 
                         onHover={this.onHover}
                         direction={DropDownDirection.DownLeft} />

@@ -12,6 +12,7 @@ interface I_Dropdown_Props {
     closeOnOptionItemClick?: boolean;
     items?: DropDownItemBase[]; 
     getItems?: () => DropDownItemBase[];
+    getItemsAsync?: () => Promise<DropDownItemBase[]>;
     onClick?: (item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     onClose?:(item: DropDownItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
     onChecked?: (optionItem: OptionItem, checkedOptionItems: OptionItem[], allOptionItems: OptionItem[]) => void;
@@ -37,6 +38,7 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         closeOnOptionItemClick: false,
         items: [],
         getItems: undefined,
+        getItemsAsync: undefined,
         onClick: () => {},
         onClose: () => {},
         onChecked: () => {},
@@ -268,8 +270,14 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         // if a callback is given then call this to obtain the items to show
         if (this.props.getItems) items = this.props.getItems();
 
-        if (items.length == 0)
-        items.push(new ActionItem("a", "No items provided!"));
+        // if we have async items then
+        if (this.props.getItemsAsync) this.props.getItemsAsync().then(items => {
+            if (!this.state.listVisible) items.length = 0;
+            this.setState({ dropDownItems: items });
+        });
+
+        if (items.length == 0 && !this.props.getItemsAsync)
+            items.push(new ActionItem("a", "No items provided!"));
 
         // nothing given so inform the user...
         return items;
@@ -445,6 +453,7 @@ export class DropDownControl {
     
     // called just before the items are needed allowing customising of the items depending on current state
     public getItems: () => DropDownItemBase[] = undefined;
+    public getItemsAsync: () => Promise<DropDownItemBase[]>;
 
     // given fixed set of items.
     public items: DropDownItemBase[] = [];
@@ -512,6 +521,7 @@ export class DropDownControl {
             closeOnOptionItemClick={this.closeOnOptionItemClick}
             items={this.items}
             getItems={this.getItems}
+            getItemsAsync={this.getItemsAsync}
             onClick={this.onClick}
             onClose={this.onClose}
             onChecked={this.onChecked}

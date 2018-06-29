@@ -136,6 +136,7 @@ Type | Name | args/value (default) | Description |
 *property* | setToRelativePositionIfNotSet | `true` | 'true' will allow the control to place a `position=relative` if 'position' is not set on the parent |
 *property* | items   | DropDownItemBase[] | a static list of dropdown items that is presented to the user |
 *property* | getItems | () => DropDownItemBase[] | a function callback that allows the user to return a custom set of dropdown items |
+*property* | getItemsAsync | () => Promise<DropDownItemBase[]> | a function callback that allows the user to return a custom set of dropdown items asynchronously|
 *method* | close | () => void | closes the dropdown if in opened state |
 ___
 
@@ -345,6 +346,7 @@ If an ActionItem with and without images are shown then their display text is al
 
 |version | Notes |
 | ---- | ------ |
+v 1.2.7 | Added Async support (doprdown items can now be retrieved asynchronously)
 v 1.2.6 | Added onHover support
 v 1.2.5 | Fix for positioning of popup (static pos)
 v 1.2.4 | Update in TypeScript index.d.ts
