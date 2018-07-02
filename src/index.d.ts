@@ -64,11 +64,12 @@
         clickedImage: string;
         textMarginRight: number;
         addRightImage(img: string, tooltip?: string): void;
+        clicked: (aitem: ActionItem) => void;
         //static useMaterialImage24: boolean;
     }
 
     interface ActionItemConstructor {
-        new(key: string, text: string, image?: string, isDisabled?: boolean): ActionItem;
+        new(key: string, text: string, image?: string, isDisabled?: boolean, clicked?: (ai: ActionItem) => void): ActionItem;
     }
 
     export var ActionItem: ActionItemConstructor;

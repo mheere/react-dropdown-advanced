@@ -111,6 +111,7 @@ export class DropDownItem extends DropDownItemBase {
 
 // probably the most often used Item - by default the dropdown closes onClick
 export class ActionItem extends DropDownItem {
+    public clicked: (ai: ActionItem) => void;
     public imageLeft: string = "";          // image (either fa or material)
     public imageRight: RightImageInfo[] = [];   // image (either fa or material)
     public className: string = "";          // any additional className info that is appended to the <i> image element
@@ -118,10 +119,11 @@ export class ActionItem extends DropDownItem {
     public textMarginRight: number = 0;     // if given (> 0) then this margin will be applied to the text portion (in order to create distance between the text and right image or right border)
     public static useMaterialImage24: boolean = false;  // if set to true this will default to md-24 instead of md-18.
 
-    constructor(key: string, text: string, image?: string, isDisabled?: boolean) {
+    constructor(key: string, text: string, image?: string, isDisabled?: boolean, clicked?: (ai: ActionItem) => void) {
         super(key, text);
         this.imageLeft = image || "";
         this.isDisabled = isDisabled || false;
+        this.clicked = clicked;
     }
 
     get hasImg(): boolean { return this.imageLeft.length > 0}
@@ -183,7 +185,7 @@ export class ActionItem extends DropDownItem {
 
     private renderRightImage(image: RightImageInfo, i: number) {
 
-        const style = { 
+        const style: any = { 
             title: image.toolTip
         };
 

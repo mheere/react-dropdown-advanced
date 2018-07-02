@@ -171,6 +171,12 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
             this.forceUpdate();
         }
 
+        // if the clicked item is an ActionItem then check if we need to call its inner 'clicked' callback
+        if (item.isActionItem) {
+            let aitem = item as ActionItem;
+            if (aitem.clicked) aitem.clicked(aitem);
+        }
+
         // if a click notification is given by the user then inform
         this.raiseOnClicked(item);
 

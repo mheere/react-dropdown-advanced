@@ -21,7 +21,7 @@ export class TestData {
             arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
         }
         if (pos == 'simple items') {
-            arr.push(new ActionItem("A", "Holiday in France"));
+            arr.push(new ActionItem("A", "Holiday in France", "", false, _ => alert(_.key)));
             arr.push(new ActionItem("B", "Go to California"));
             arr.push(new ActionItem("C", "Visit London"));
         }

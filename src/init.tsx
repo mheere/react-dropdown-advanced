@@ -264,7 +264,6 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
                     user: marcel
                     <DropDownMenu 
                         getItemsAsync={this.getItemsAsync}
-                        //items={this.fixedItems} 
                         onClick={this.onClick} 
                         onHover={this.onHover}
                         direction={DropDownDirection.DownLeft} />

@@ -178,6 +178,7 @@ There are four different types of DropdownItem to choose from
 *ActionItem* |imageLeft | string | identifies the 'left' image, this can either be a font awesome image (i.e. 'fa-user-o') or a google material-design-icon
 *ActionItem* |imageRight | RightImageInfo[] | an array of 'RightImageInfo' images (use addRightImage method to add these)
 *ActionItem* |isDisabled | boolean | if true, the item is shown in disabled state  
+*ActionItem* |clicked | (ai: ActionItem) => void | if callback is given this will be called first when user clicks the item
 *ActionItem* |data | object | handy storage for a data object that can be accessed when handling the clicked item later
 *ActionItem* |textMarginRight | number | if > 0 this will be applied to the right-margin of the text of the dropdown item 
 *OptionItem* | key | string | should be unique, if none is given then one is generated 
@@ -372,7 +373,8 @@ If an ActionItem with and without images are shown then their display text is al
 
 |version | Notes |
 | ---- | ------ |
-v 1.2.7 | Added Async support (doprdown items can now be retrieved asynchronously)
+v 1.2.8 | Direct 'click' callback support on ActionItem
+v 1.2.7 | Added Async support (dropdown items can now be retrieved asynchronously)
 v 1.2.6 | Added onHover support
 v 1.2.5 | Fix for positioning of popup (static pos)
 v 1.2.4 | Update in TypeScript index.d.ts
