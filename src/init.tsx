@@ -244,6 +244,17 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
 
     }
 
+    private getItemsSync = () => {
+        var arr: DropDownItemBase[] = [];
+        arr.push(new ActionItem("SYNC", "SYNC", "fa-window-close-o"));
+        arr.push(new ActionItem("logout", "Logout", "fa-window-close-o"));
+        arr.push(new SeperatorItem());
+        arr.push(new ActionItem("profile", "Show Profile", "fa-user-o"));
+        arr.push(new ActionItem("shortcuts", "Show Shortcuts", "fa-mail-forward"));
+        arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
+        return arr;            
+    }
+
     private getItemsAsync = () => {
         return new Promise<DropDownItemBase[]>((resolve, reject) => {
             setTimeout( () => {
@@ -255,7 +266,7 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
                 arr.push(new ActionItem("setting", "System Settings", "fa-cog"));
             
                 resolve(arr)
-            } , 100);
+            } , 500);
         });
     }
 
