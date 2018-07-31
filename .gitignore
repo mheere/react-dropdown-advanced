@@ -10,4 +10,4 @@ info.txt
 gulpfile.js
 package-lock.json
 src/index.tsx
-
+.cache/

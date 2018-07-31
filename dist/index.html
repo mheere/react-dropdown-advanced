@@ -2,7 +2,7 @@
 <html>
     <head>
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122818037-1"></script>
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-122818037-1"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -10,7 +10,8 @@
 
             gtag('config', 'UA-122818037-1');
         </script>
-        <meta charset="UTF-8" />
+
+        <meta charset="UTF-8">
         <title>React Dropdown Test</title>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style> 
@@ -18,18 +19,17 @@
                 border: 4px solid red;
             } */
         </style>
-    </head>
+    <link rel="stylesheet" href="/init.5ad94371.css"></head>
     <body>
 
-        <div id='root'>
+        <div id="root">
 
             <!-- <div id='strip'></div> -->
-            <div id='strip'>DropDown examples</div>
+            <div id="strip">DropDown examples</div>
 
             <div class="nav-l-2">
                 <ul>
-                    <li id='test001' class="pull-right" title="User Info" 
-                        style="position: absolute; right: 20px; padding-top: 11px; z-index: 1; cursor: pointer;"></li>
+                    <li id="test001" class="pull-right" title="User Info" style="position: absolute; right: 20px; padding-top: 11px; z-index: 1; cursor: pointer;"></li>
                 </ul>
             </div>
 
@@ -37,14 +37,20 @@
 
         <div class="row">
             <div class="flex-row">
-            <div class="column1" >
-                <div class='my-header'>Simple 'fixed'</div>
-                <img src="http://www.reactdropdown.marcelheeremans.com/pics/fixeditems.png>" />
-                <div id="ex1" class='example ex1'>
+            <div class="column1">
+                <div class="my-header">Simple 'fixed'</div>
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/fixeditems.png>">
+                <div id="ex1" class="example ex1">
                     example
                 </div>
+                <div id="ex-create-on-fly" class="example ex1">
+                    on the fly
+                </div>
+                <div id="ex-create-on-fly2" class="example ex1">
+                    on the fly 2
+                </div>
             </div>
-            <div class="column2" >
+            <div class="column2">
                 <h4>Code example</h4>
 <pre><code>
 ...
@@ -67,12 +73,12 @@ private onClick = (item: DropDownItem) => {
 
 
 <div class="flex-row">
-<div class="column1" >
-        <div class='my-header'>Dynamic items</div>
-        <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>" />
-        <div id="ex2" class='example'>example</div>
+<div class="column1">
+        <div class="my-header">Dynamic items</div>
+        <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>">
+        <div id="ex2" class="example">example</div>
     </div>
-    <div class="column2" >
+    <div class="column2">
         <h4>Code example</h4>
     <pre><code>
 ...
@@ -88,7 +94,7 @@ private getDynamicItems = () => {
 ...
 &lt;div id='test-menu-lt'>
     fixed items
-    &lt;DropDownMenu getItems={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownRight} /&gt;
+    &lt;DropDownMenu items={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownRight} /&gt;
 &gt;
 </code></pre>
             </div>
@@ -96,12 +102,12 @@ private getDynamicItems = () => {
 
 
 <div class="flex-row">
-<div class="column1" >
-        <div class='my-header'>Dynamic Async items</div>
-        <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>" />
-        <div id="ex-dyn-async" class='example'>example</div>
+<div class="column1">
+        <div class="my-header">Dynamic Async items</div>
+        <img src="http://www.reactdropdown.marcelheeremans.com/pics/dynamicitems.png>">
+        <div id="ex-dyn-async" class="example">example</div>
     </div>
-    <div class="column2" >
+    <div class="column2">
         <h4>Code example</h4>
     <pre><code>
 ...
@@ -126,17 +132,17 @@ private getItemsAsync = () => {
     fixed items
     &lt;DropDownMenu getItemsAsync={this.getItemsAsync} onClick={this.onClick} direction={DropDownDirection.DownLeft} /&gt;
 &gt;
-    </code></pre>
+    </DropDownItemBase[]></code></pre>
 </div>
 </div>
 
 <div class="flex-row">
-            <div class="column1" >
-                <div class='my-header'>Dynamic - Right image actions</div>
-                <img src="http://www.reactdropdown.marcelheeremans.com/pics/rightimages.png>" />
-                <div id="ex-right-img" class='example'>example</div>
+            <div class="column1">
+                <div class="my-header">Dynamic - Right image actions</div>
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/rightimages.png>">
+                <div id="ex-right-img" class="example">example</div>
             </div>
-            <div class="column2" >
+            <div class="column2">
                 <h4>Code example</h4>
 <pre><code>
 ...
@@ -163,7 +169,7 @@ private getDynamicItems = () => {
 
 &lt;div id='test-menu-lt'>
     fixed items
-    &lt;DropDownMenu getItems={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownLeft} /&gt;
+    &lt;DropDownMenu items={this.getDynamicItems} onClick={this.onClick} direction={DropDownDirection.DownLeft} /&gt;
 &gt;
 </code></pre>
             </div>
@@ -171,12 +177,12 @@ private getDynamicItems = () => {
 
 
             <div class="flex-row">
-            <div class="column1" >
-                <div class='my-header'>Radio/Option mixed</div>
-                <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png>" />
-                <div id="ex3" class='example'>example</div>
+            <div class="column1">
+                <div class="my-header">Radio/Option mixed</div>
+                <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex.png>">
+                <div id="ex3" class="example">example</div>
             </div>
-            <div class="column2" >
+            <div class="column2">
                 <h4>Code example</h4>
 <pre><code>
 ...
@@ -230,12 +236,12 @@ static demoComplex = () => {
 
 
             <div class="flex-row">
-            <div class="column1" >
-                    <div class='my-header'>Showcase</div>
-                    <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex2.png>" />
-                    <div id="ex4" class='example'>example</div>
+            <div class="column1">
+                    <div class="my-header">Showcase</div>
+                    <img src="http://www.reactdropdown.marcelheeremans.com/pics/OptionsComplex2.png>">
+                    <div id="ex4" class="example">example</div>
                 </div>
-                <div class="column2" >
+                <div class="column2">
                     <h4>Code example</h4>
     <pre><code>
 static getDynamicItems() {
@@ -295,7 +301,7 @@ static demoComplex = () => {
           
         </div>
         
-        <script src="./bundle.js"></script>
+        <script src="/init.5ad94371.js"></script>
         
     </body>
 </html>

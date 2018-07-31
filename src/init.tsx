@@ -9,6 +9,57 @@ import './styles/rdropdown.scss';
 import './styles/demo.scss';
 require('font-awesome/css/font-awesome.css');
 
+// 
+// -----------------------------
+
+var createOnTheFly = (el: any, e: any) => {
+    debugger;
+    console.log("createOnTheFly");
+
+    // SUPER ANNOYING - but this is called BEFORE???  the actual react onClick item handler (even though that one is clicked first) 
+    // not sure what to do about this apart from the following hack of a static currentTarget property to 'know' that we are currently showing...
+    //if (DropDownControl.isOpenOnCreate(e)) return;
+    //DropDownControl.registerOpenOnCreate(e);
+
+    var dd = new DropDownControl(el);
+
+    // if 
+    //if (dd == null) return;
+
+    dd.setToRelativePositionIfNotSet = true;    
+    dd.openOnCreate = true;
+    
+    // 2. specify the dropdown items
+    dd.getItems = () => TestData.getItems("simple items");
+    dd.direction = DropDownDirection.DownRight;
+    
+    // 3. 
+    dd.closeOnActionItemClick = true;
+    
+    // 4. place event handlers
+    dd.onClick = (item) => {
+        console.log(`Item '${item.key}' was clicked. [key: ${item.key}]`);
+    }
+    dd.onChecked = (item, checkedOptionItems, allCheckedOptionItems) => {
+        console.log(`'${item.text}' was clicked [checked: ${item.isChecked}]`);
+    }
+    dd.onClose = (item) => {
+        var txt = item ? item.text : " no item was clicked";
+        console.log("popup closed - last item: " + txt);
+        //DropDownControl.unregisterOpenOnCreate(e);          // ensure the clear this static property...
+    };
+    
+    // 4. create the react dropdown
+    dd.createMenu();
+}
+
+// 1. on-the-fly - when clicked I want to create the dropdown and AUTO-OPEN - then destroy when closed!
+var elFly = document.getElementById('ex-create-on-fly');
+elFly.onclick = (e) => createOnTheFly(elFly, e);
+
+var elFly2 = document.getElementById('ex-create-on-fly2');
+elFly2.onclick = (e) => createOnTheFly(elFly2, e);
+
 // -----------------------------
 
 // 1. create a new DropDownControl for this element

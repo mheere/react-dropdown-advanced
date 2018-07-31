@@ -21,6 +21,7 @@ interface I_Dropdown_Props {
     maxHeight?: number;
     alignText?: boolean;
     setRelativePosition? : boolean;
+    openOnCreate?: boolean;
 }
 
 interface I_Dropdown_State {
@@ -46,6 +47,7 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         onHover: () => {},
         maxHeight: 260,
         alignText: true,
+        openOnCreate: false,
         setRelativePosition: true
     }
 
@@ -76,7 +78,10 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         // if we don't have an element to attach to then step out (if we are creating programmatically)
         if (this.state.element == undefined) return;
 
-        this.attachClick();
+        if (this.props.openOnCreate)
+            this.doShowNow();
+        else
+            this.attachClick();
     }
 
     public componentWillUnmount() {
@@ -146,7 +151,13 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
     private select(item: DropDownItem, e: any) {
         
         // stop this event bubbling up...
-        e.nativeEvent.stopImmediatePropagation();
+        //debugger;
+
+        e.preventDefault();
+
+        //e.nativeEvent.stopImmediatePropagation();
+        //e.nativeEvent.preventDefault();
+        e.stopImmediatePropagation();
 
         // don't process header or seperator items
         if (item.isHeaderItem || item.isSeperatorItem || item.isDisabled) return;
@@ -234,6 +245,17 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
 
         // inform the settings object so it can inform the user etc
         this.raiseOnClosed();
+
+        // remove all traces if we were created on-the-fly
+        if (this.props.openOnCreate && this.props.__element) {
+            
+            // get the menu child element(s) (there should only be one) (returns an HTMLCollection)
+            var els: any = this.props.__element.getElementsByClassName('dd-menu-new');
+            
+            // so convert this first to an array and remove each item
+            [...els].forEach(el => el.remove());
+        }
+        
     }
 
     // ---------------------------------
@@ -372,15 +394,29 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         
         this.state.element.addEventListener("click", () => {
 
-            // if we are open then step out
-            if (this.isOpen) return;
+            this.doShowNow();
 
-            // hang on to the fact we are open (and let user know)
-            this.raiseOnOpened();
+            // // if we are open then step out
+            // if (this.isOpen) return;
 
-            // disconected from click event - show the popup
-            setTimeout(() => { this.show(); });     // we HAVE to disconnect this otherwise the show is called followed by the hide directly!
+            // // hang on to the fact we are open (and let user know)
+            // this.raiseOnOpened();
+
+            // // disconected from click event - show the popup
+            // setTimeout(() => { this.show(); });     // we HAVE to disconnect this otherwise the show is called followed by the hide directly!
         });
+    }
+
+    private doShowNow() {
+
+        // if we are open then step out
+        if (this.isOpen) return;
+
+        // hang on to the fact we are open (and let user know)
+        this.raiseOnOpened();
+
+        // disconected from click event - show the popup
+        setTimeout(() => { this.show(); });     // we HAVE to disconnect this otherwise the show is called followed by the hide directly!
     }
 
     private lookForParent(el: any) {
@@ -391,6 +427,12 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         this.setState({ element: el.parentElement }, () => this.attachClick());
     }
 
+    private dealWithItemClick(el: any, item: any) {
+        if (!el) return;
+        el.addEventListener("click", (e: any) => {
+            this.select(item, e);
+        });
+    }
 
     private renderListItems() {
 
@@ -410,9 +452,12 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
         }
 
         // callback for any items and map these to something useful
+        // onClick={this.select.bind(this, item)} 
+        // ref={(el => { el.addEventListener("click", () => { this.select.bind(this, item) })  })}
+        // onClick={this.select.bind(this, item)} 
         return this.state.dropDownItems.map(item => (
             <div key={item.key} className={item.ddclass} style={ { position: 'relative' } } 
-                onClick={this.select.bind(this, item)} 
+                ref={(el) => { this.dealWithItemClick(el, item); }}
                 onMouseEnter={this.mouseEnter.bind(this, item)} 
                 onMouseLeave={this.mouseLeave.bind(this, item)} >
                     { item.render(adjustLeftMargin) }
@@ -456,6 +501,25 @@ export class DropDownControl {
     public alignText: boolean = true;   // if true, we align any ActionItems that have no image with ActionItem(s) that do have an image or OptionItems (since these always have an 'image')
     public setToRelativePositionIfNotSet: boolean = true;     // this ensures we will set the element to have a position of 'relative' if it wasn't set!
     private __closeHelper: CloseHelper = new CloseHelper();
+    public openOnCreate: boolean = false;
+    public static currentTargets: any[] = [];
+
+    public static registerOpenOnCreate(e: any) {
+        var item = this.currentTargets.find(t => t == e.currentTarget);
+        if (item) return;
+        this.currentTargets.push(e.currentTarget);
+    }
+
+    public static isOpenOnCreate(e:any): boolean {
+        var item = this.currentTargets.find(t => t == e.currentTarget);
+        return item != null;
+    }
+
+    public static unregisterOpenOnCreate(e: any) {
+        var itemNo = this.currentTargets.findIndex(t => t == e.currentTarget);
+        if (itemNo > -1)
+            this.currentTargets.splice(itemNo, 1);
+    }
     
     // called just before the items are needed allowing customising of the items depending on current state
     public getItems: () => DropDownItemBase[] = undefined;
@@ -513,9 +577,18 @@ export class DropDownControl {
         // add a div element we will place this dropdown into - we don't want to disturb the original markup
         var newDiv = document.createElement("div"); 
         newDiv.classList.add("dd-menu-new");
+        // newDiv.onclick = (e) => {
+        //     //debugger;
+        //     //console.log("dd-menu-new clicked - " + e.currentTarget);
+        //     //e.cancelBubble = true;
+        //     //e.stopImmediatePropagation();
+        //     //e.stopPropagation();
+        //     //e.preventDefault();
+        // }
 
         // add the text node to the newly created div
         this.element.appendChild(newDiv);
+        //this.element.after(newDiv);
         
         ReactDOM.render(<DropDownMenu 
             __element={this.element}
@@ -533,6 +606,7 @@ export class DropDownControl {
             onChecked={this.onChecked}
             onOpened={this.onOpened}
             onHover={this.onHover}
+            openOnCreate={this.openOnCreate}
             />, newDiv);
     }
 
