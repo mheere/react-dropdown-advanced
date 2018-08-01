@@ -13,18 +13,10 @@ require('font-awesome/css/font-awesome.css');
 // -----------------------------
 
 var createOnTheFly = (el: any, e: any) => {
-    debugger;
+    //debugger;
     console.log("createOnTheFly");
 
-    // SUPER ANNOYING - but this is called BEFORE???  the actual react onClick item handler (even though that one is clicked first) 
-    // not sure what to do about this apart from the following hack of a static currentTarget property to 'know' that we are currently showing...
-    //if (DropDownControl.isOpenOnCreate(e)) return;
-    //DropDownControl.registerOpenOnCreate(e);
-
     var dd = new DropDownControl(el);
-
-    // if 
-    //if (dd == null) return;
 
     dd.setToRelativePositionIfNotSet = true;    
     dd.openOnCreate = true;
@@ -46,7 +38,6 @@ var createOnTheFly = (el: any, e: any) => {
     dd.onClose = (item) => {
         var txt = item ? item.text : " no item was clicked";
         console.log("popup closed - last item: " + txt);
-        //DropDownControl.unregisterOpenOnCreate(e);          // ensure the clear this static property...
     };
     
     // 4. create the react dropdown
@@ -320,6 +311,8 @@ class DropDownDemo1 extends React.Component<DropDownDemo1Props, {}> {
             } , 500);
         });
     }
+
+    
 
     render() {
         return <div id='root2'>

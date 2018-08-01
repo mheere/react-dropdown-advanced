@@ -156,6 +156,7 @@ Type | Name | args/value (default) | Description |
 *event* | onChecked | (optionItem, checkedOptionItems, allOptionItems) => void   | called when user checks or unchecks an Option item |
 *event* | onHover | (item) => void   | called when user hovers over a dropdown item (item is null if we moved out of the item)|
 *property* | direction | `DownRight` | direction the popup will show when opened |
+*property* | openOnCreate | `false` | true will force the dropdown to open upon creation (programmatic mode only!) |
 *property* | alignText | `true` | true will force ActionItems that have no image to be aligned with ActionItems that do have an image or with OptionItems (example given at 'Other' section below)  |
 *property* | closeOnActionItemClick | `true` | Set to false for the Dropdown Menu to stay visible on clicking an ActionItem |
 *property* | closeOnOptionItemClick | `false` | Set to true for the Dropdown Menu to hide on clicking an OptionItem |
@@ -373,6 +374,7 @@ If an ActionItem with and without images are shown then their display text is al
 
 |version | Notes |
 | ---- | ------ |
+v 1.2.9 | OpenOnCreate option - if set to true it will force the dropdown to open upon creation (code only!)
 v 1.2.8 | Direct 'click' callback support on ActionItem
 v 1.2.7 | Added Async support (dropdown items can now be retrieved asynchronously)
 v 1.2.6 | Added onHover support

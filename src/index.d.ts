@@ -93,6 +93,7 @@
     interface DropDownControl {
         element: any;
         direction: DropDownDirection;
+        openOnCreate: boolean;
         closeOnActionItemClick: boolean;
         closeOnOptionItemClick: boolean;
         alignText: boolean;

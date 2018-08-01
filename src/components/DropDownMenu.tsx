@@ -151,13 +151,10 @@ export class DropDownMenu extends React.Component<I_Dropdown_Props, I_Dropdown_S
     private select(item: DropDownItem, e: any) {
         
         // stop this event bubbling up...
-        //debugger;
-
-        e.preventDefault();
-
-        //e.nativeEvent.stopImmediatePropagation();
-        //e.nativeEvent.preventDefault();
-        e.stopImmediatePropagation();
+        if (e.nativeEvent)      // this is when it was React raising the click (now I had to change that to normal event handlers....)
+            e.nativeEvent.stopImmediatePropagation();       // so this is not called anymore...
+        else
+            e.stopImmediatePropagation();
 
         // don't process header or seperator items
         if (item.isHeaderItem || item.isSeperatorItem || item.isDisabled) return;
@@ -502,24 +499,6 @@ export class DropDownControl {
     public setToRelativePositionIfNotSet: boolean = true;     // this ensures we will set the element to have a position of 'relative' if it wasn't set!
     private __closeHelper: CloseHelper = new CloseHelper();
     public openOnCreate: boolean = false;
-    public static currentTargets: any[] = [];
-
-    public static registerOpenOnCreate(e: any) {
-        var item = this.currentTargets.find(t => t == e.currentTarget);
-        if (item) return;
-        this.currentTargets.push(e.currentTarget);
-    }
-
-    public static isOpenOnCreate(e:any): boolean {
-        var item = this.currentTargets.find(t => t == e.currentTarget);
-        return item != null;
-    }
-
-    public static unregisterOpenOnCreate(e: any) {
-        var itemNo = this.currentTargets.findIndex(t => t == e.currentTarget);
-        if (itemNo > -1)
-            this.currentTargets.splice(itemNo, 1);
-    }
     
     // called just before the items are needed allowing customising of the items depending on current state
     public getItems: () => DropDownItemBase[] = undefined;
@@ -540,8 +519,12 @@ export class DropDownControl {
         this.__closeHelper.close();
     }
 
-    // Called when all settings have been set 
     public createMenu() {
+        setTimeout(() => this.createMenu2(), 1);
+    }
+
+    // Called when all settings have been set 
+    public createMenu2() {
 
         // check if we need to find the element ourselves 
         if (typeof this.element == 'string' || this.element instanceof String) {
@@ -577,18 +560,9 @@ export class DropDownControl {
         // add a div element we will place this dropdown into - we don't want to disturb the original markup
         var newDiv = document.createElement("div"); 
         newDiv.classList.add("dd-menu-new");
-        // newDiv.onclick = (e) => {
-        //     //debugger;
-        //     //console.log("dd-menu-new clicked - " + e.currentTarget);
-        //     //e.cancelBubble = true;
-        //     //e.stopImmediatePropagation();
-        //     //e.stopPropagation();
-        //     //e.preventDefault();
-        // }
 
         // add the text node to the newly created div
         this.element.appendChild(newDiv);
-        //this.element.after(newDiv);
         
         ReactDOM.render(<DropDownMenu 
             __element={this.element}
